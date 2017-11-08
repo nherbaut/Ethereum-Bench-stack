@@ -1,25 +1,14 @@
 include:
   - docker
 
-python-pip:
-  pkg.installed
-
-docker-py:
-  pip.installed:
-    - require:
-      - pkg: python-pip
-
-
 chronograf:latest:
-  cmd.run:
-    - name: docker pull chronograf:latest
+  docker_image.present:
     - require:
       - sls: docker
 
 
 influxdb:latest:
-   cmd.run:
-     - name: docker pull influxdb:latest
+   docker_image.present:
      - require:
        - sls: docker
 

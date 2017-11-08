@@ -10,7 +10,7 @@ services:
       - mynet
     deploy:
       replicas: 3
-    command: iperf -c {{ salt['mine.get']('vm1', 'network.ip_addrs')['vm1'][0] }}  -p 5000
+    command: bash -c 'iperf -c 10.0.56.$$(( RANDOM % 3 + 102))  -p 5000'
 
   server:
     image: nherbaut/netcont:latest
