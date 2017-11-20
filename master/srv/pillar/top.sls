@@ -2,3 +2,6 @@ base:
   '*':
     - urlsource
     - influxdb
+    - placement
+  
+ 

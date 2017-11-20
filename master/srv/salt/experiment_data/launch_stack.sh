@@ -1,4 +1,3 @@
-{{ show_full_context() }}
 
 echo "create the swarm"
 docker swarm init --advertise-addr {{ salt['mine.get']('vm1', 'datapath_ip')['vm1'][0] }}

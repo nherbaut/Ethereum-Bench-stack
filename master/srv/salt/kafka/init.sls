@@ -2,9 +2,9 @@ include:
   - docker
 
 
-{% if salt['pillar.get']('placement:cassandra:'+grains.id, "False")==True  %}
+{% if salt['pillar.get']('placement:kafka:'+grains.id, "False")==True  %}
 
-cassandra:latest:
+spotify/kafka:latest:
   docker_image.present:
     - require: 
       - sls: docker

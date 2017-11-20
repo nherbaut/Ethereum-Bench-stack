@@ -1,0 +1,12 @@
+placement:
+  - cassandra:
+    - vm1: true
+    - vm2: true
+    - vm3: true
+  - kafka:
+    - vm1: true
+    - vm2: true
+    - vm4: true
+  - spark:
+    - vm1: true
+    - vm2: true

@@ -2,9 +2,10 @@ include:
   - docker
 
 
-{% if salt['pillar.get']('placement:cassandra:'+grains.id, "False")==True  %}
+{% if salt['pillar.get']('placement:spark:'+grains.id, "False")==True  %}
 
-cassandra:latest:
+  
+gettyimages/spark:
   docker_image.present:
     - require: 
       - sls: docker
