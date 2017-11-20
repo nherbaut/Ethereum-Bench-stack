@@ -10,3 +10,19 @@ placement:
   - spark:
     - vm1: true
     - vm2: true
+  - iperf_server:
+    - vm1:
+      - running: True
+    - vm2:
+      - running: True
+  - iperf_client:
+    - vm3:
+      - running: True
+      - target: vm1
+    - vm4:
+      - running: True
+      - target: vm2
+  
+    
+
+  
