@@ -63,7 +63,18 @@ Vagrant.configure("2") do |config|
     sudo cp -r /tmp/master/etc/* /etc/
     sudo cp -r /tmp/minion/etc/* /etc/
 
-    echo "mine_functions:\n  network.interfaces: []\n  network.ip_addrs:\n     - $NIC_NAME "  >> /etc/salt/minion
+    echo "\n
+rejected_retry: True
+mine_interval: 1 
+hostsfile:
+  alias: controlpath_ip
+mine_functions:
+  datapath_ip:
+    - mine_function: network.ip_addrs
+    - $NIC_NAME
+  controlpath_ip:
+    - mine_function: network.ip_addrs
+    - $NIC_NAME" > /etc/salt/minion
 
 
     sudo service salt-master restart
@@ -92,7 +103,22 @@ begin
 
              cp -r /tmp/minion/etc/* /etc/
 
-             echo "mine_functions:\n  network.interfaces: []\n  network.ip_addrs:\n     - $NIC_NAME "  >> /etc/salt/minion
+
+    echo "\n
+rejected_retry: True
+mine_interval: 1     
+hostsfile:
+  alias: controlpath_ip
+mine_functions:
+  datapath_ip:
+    - mine_function: network.ip_addrs
+    - $NIC_NAME
+  controlpath_ip:
+    - mine_function: network.ip_addrs
+    - $NIC_NAME" > /etc/salt/minion
+
+
+
              sudo service salt-minion restart
 	     SHELL
 
