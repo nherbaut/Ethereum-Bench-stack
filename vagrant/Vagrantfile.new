@@ -1,0 +1,106 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+
+require 'yaml'
+#https://stackoverflow.com/questions/16708917/how-do-i-include-variables-in-my-vagrantfile
+current_dir    = File.dirname(File.expand_path(__FILE__))
+configs        = YAML.load_file("#{current_dir}/config.yaml")
+vagrant_config = configs['configs'][configs['configs']['use']]
+
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+
+  config.vm.provider configs['configs']['use']
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://vagrantcloud.com/search.
+  config.vm.box = vagrant_config["base_box"]
+  config.vm.provider "virtualbox" do |v|
+       v.memory = 2048
+       v.cpus = 2
+   end
+
+   config.vm.provider "libvirt" do |v|
+      v.graphics_type="none"
+      v.memory = 2048
+      v.cpus = 2
+      v.
+   end
+
+
+  master_ip=vagrant_config["base_ip"] % [101]
+  nic_name=vagrant_config["nic_name"]
+
+
+ config.vm.define "vm1" do |vm1|
+     vm1.vm.network :private_network,
+                  :ip=> master_ip,
+                  :libvirt__forward_mode => route
+
+     vm1.vm.hostname="vm1"
+     vm1.vm.provision "file", source: "../master/.", destination: "/tmp/master"
+     vm1.vm.provision "file", source: "../minion/.", destination: "/tmp/minion"
+
+     vm1.vm.provision "shell",  env: {"MASTER_IP"=>master_ip, "NIC_NAME" => nic_name}, inline: <<-SHELL
+       echo "$MASTER_IP salt" >> /etc/hosts
+       apt-get update
+       apt-get install wget
+       wget -O - https://repo.saltstack.com/apt/ubuntu/16.04/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
+       echo "deb http://repo.saltstack.com/apt/ubuntu/16.04/amd64/latest xenial main" >> /etc/apt/sources.list.d/saltstack.list
+       apt-get update
+       apt-get install salt-master salt-minion python-pygit2 python-git --yes
+
+       sudo cp -r /tmp/master/* /
+       sudo cp -r /tmp/minion/* /
+
+       echo "mine_functions:\n  network.interfaces: []\n  network.ip_addrs:\n     - $NIC_NAME "  >> /etc/salt/minion
+
+
+       sudo service salt-master restart
+       sudo service salt-minion restart
+     SHELL
+
+ end
+
+
+ begin
+   (2..(vagrant_config["minion_count"]+1)).each do |i|
+           config.vm.define "vm%d" % [ i ] do |node|
+
+
+              node.vm.hostname="vm%d" % [i]
+              node.vm.network :private_network,
+                               :ip=> vagrant_config["base_ip"] % [100+i],
+                               :libvirt__forward_mode => route
+
+              node.vm.provision "file", source: "../minion/.", destination: "/tmp/minion"
+              node.vm.provision "shell", env: {"MASTER_IP"=>master_ip, "NIC_NAME" => nic_name}, inline: <<-SHELL
+              echo "$MASTER_IP salt" >> /etc/hosts
+              apt-get update
+              apt-get install wget
+              wget -O - https://repo.saltstack.com/apt/ubuntu/16.04/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
+              echo "deb http://repo.saltstack.com/apt/ubuntu/16.04/amd64/latest xenial main" >> /etc/apt/sources.list.d/saltstack.list
+              apt-get update && apt-get install salt-minion python-pygit2 python-git --yes
+
+              sudo cp -r /tmp/minion/* /
+
+
+              echo "mine_functions:\n  network.interfaces: []\n  network.ip_addrs:\n     - $NIC_NAME "  >> /etc/salt/minion
+              sudo service salt-minion restart
+              SHELL
+
+
+
+       end
+   end
+ end
+ end
+

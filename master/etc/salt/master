@@ -6,6 +6,7 @@ file_roots:
     - /srv/formulas/hostsfile-formula
     - /srv/formulas/openssh-formula
     - /srv/formulas/docker-formula
+    - /srv/formulas/consul-formula
 
 
 

@@ -20,6 +20,7 @@
 /root/reset_monitoring.sh:
   file.managed:
     - source: salt://experiment_data/reset_monitoring.sh
+    - template: jinja
     - mode: 0755
 
 

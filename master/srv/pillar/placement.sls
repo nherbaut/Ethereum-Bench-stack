@@ -1,3 +1,5 @@
+monitoring:
+  - monitoring_vm: vm1
 placement:
   - cassandra:
     - vm1: true
