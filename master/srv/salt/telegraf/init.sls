@@ -35,4 +35,8 @@ telegraf:
     - require:
        - module:
           telegraf_systemd_unit
-       
+      
+
+docker-spy:
+  pip.installed:
+    - name: salt://docker-spy/Docker_Spy-0.0.1-py2.7.egg
