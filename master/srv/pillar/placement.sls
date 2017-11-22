@@ -17,13 +17,18 @@ placement:
       - running: True
     - vm2:
       - running: True
+    - vm3:
+      - running: True
   - iperf_client:
     - vm3:
       - running: True
-      - target: vm1
+      - target:  vm1
     - vm4:
       - running: True
-      - target: vm2
+      - target:  vm2
+    - vm2:
+      - running: True
+      - target: vm1
   
     
 

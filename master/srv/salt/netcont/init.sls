@@ -4,8 +4,9 @@ include:
 
 {% if salt['pillar.get']('placement:iperf_server:'+grains.id+':running', "False")==True  %}
 
-nherbaut/netcont:
+server from {{ grains.id }}:
   docker_image.present:
+    - name: nherbaut/netcont
     - require: 
       - sls: docker
   docker_container.running:
@@ -24,8 +25,9 @@ nherbaut/netcont:
 {% if salt['pillar.get']('placement:iperf_client:'+grains.id+':running', "False")==True  %}
 {% set target_ip = salt['mine.get'](target, 'datapath_ip')[target][0]  %}
 
-nherbaut/netcont:
+client to {{ target_ip }}:
   docker_image.present:
+    - name: nherbaut/netcont
     - require:
       - sls: docker
   docker_container.running:
