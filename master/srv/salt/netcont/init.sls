@@ -9,7 +9,7 @@ nherbaut/netcont:
     - require: 
       - sls: docker
   docker_container.running:
-    - name: iperf_server
+    - name: ipsrv 
     - image: nherbaut/netcont
     - cmd: iperf -s -p 5000
     - port_bindings:
@@ -22,14 +22,14 @@ nherbaut/netcont:
 {% set target= salt['pillar.get']('placement:iperf_client:'+grains.id+':target', "None") %}
 
 {% if salt['pillar.get']('placement:iperf_client:'+grains.id+':running', "False")==True  %}
-{% set target_ip = salt['mine.get'](target, 'controlpath_ip')[target][0]  %}
+{% set target_ip = salt['mine.get'](target, 'datapath_ip')[target][0]  %}
 
 nherbaut/netcont:
   docker_image.present:
     - require:
       - sls: docker
   docker_container.running:
-    - name: iperf_client
+    - name: ipcli
     - image: nherbaut/netcont
     - cmd: /bin/bash -c "while true; do iperf -c {{ target_ip }} -p 5000; sleep 2; done "
 

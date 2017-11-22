@@ -1,3 +1,4 @@
+# nftables installation
 nftables-ppa:
   pkgrepo.managed:
     - humanname: erGW team PPA
@@ -11,62 +12,92 @@ nftables-ppa:
 
 
 nftables:
-  pkg.installed
+  pkg.installed:
+    - required_in:
+      - nft flush ruleset
 
-  
+
+nft flush ruleset:
+  cmd.run
+
 nft add table filter:
   cmd.run:
-    - require:
-      - nftables
-    - unless:
-        - cmd:
-          - run
-          - name:
-            - nft list table filter
+    - check_cmd:
+      - nft list table filter
 
-nft flush table filter:
+
+prerouting:
   cmd.run:
+    - name: nft add chain filter prerouting { type filter hook prerouting priority 0 \; }
     - require:
-      - nftables
-      - nft add table filter
-    - unless:
-        - cmd:
-          - run
-          - name:
-            - nft list table filter
+      - cmd: nft add table filter
 
 
+{% set contnet = salt['mine.get']("*","docker_spy") %}
+{% set local_containers = salt['mine.get'](grains.id,"docker_spy")[grains.id] %}
+{% for remote_host in contnet  %}
+  {% for container_name in contnet[remote_host] %}
+    {% for port in contnet[remote_host][container_name]["ports"] %}
+      {% for local_container in local_containers  %}
+         {% set host_ip=contnet[remote_host][container_name]['ip'] %}
+         {% set remote_container_ip=contnet[remote_host][container_name]['private_ip'] %}
+         {% set local_container_ip=local_containers[local_container]['private_ip'] %}
+         {% if remote_host != grains.id %}
+           {% set outbound_chain=remote_host+"_"+container_name+"_"+grains.id+"_"+local_container %}
+           {% set inbound_chain=grains.id+"_"+local_container+"_"+remote_host+"_"+container_name %}
 
-
-nft add chain filter output { type filter hook output priority 0 \; }:
+inbound_chain {{ inbound_chain }}:
   cmd.run:
+    - name: nft add chain filter {{ inbound_chain }}
     - require:
-      - nft add table filter
+      - cmd: prerouting
 
-nft add chain filter input { type filter hook input priority 0 \; }:
+outbound_chain {{ outbound_chain }}:
   cmd.run:
+    - name: nft add chain filter {{ outbound_chain }}
     - require:
-      - nft add table filter
+      - cmd: prerouting
 
-nft add chain filter forward { type filter hook forward priority 0 \; }:
+inbound_chain_counter {{ inbound_chain }}:
   cmd.run:
+    - name: nft add rule filter {{ inbound_chain }} counter
     - require:
-      - nft add table filter
+      - cmd: inbound_chain {{ inbound_chain }}
 
-
-nft add rule filter input  flow table ift  { ip daddr . ip daddr . tcp dport counter}:
+outbound_chain_counter {{ outbound_chain }}:
   cmd.run:
+    - name: nft add rule filter {{ outbound_chain }} counter
     - require:
-      - nft add table filter
+      - cmd: outbound_chain {{ outbound_chain }}
 
 
-nft add rule filter output  flow table oft  { ip saddr . ip daddr .  tcp dport counter}:
+nft add rule filter prerouting  ip saddr . ip daddr . tcp sport { {{ host_ip }} . {{ local_container_ip }} .  {{ port }} }   jump {{ inbound_chain }}:
   cmd.run:
-    - require:
-      - nft add table filter
+   - require:
+     - cmd: inbound_chain_counter {{ inbound_chain }}
 
-nft add rule filter forward  flow table fft  {  ip saddr . ip daddr . tcp dport counter }:
+
+nft add rule filter prerouting  ip daddr . ip saddr . tcp dport { {{ host_ip }} . {{ local_container_ip }} .  {{ port }} }   jump {{ outbound_chain }}:
   cmd.run:
-    - require:
-      - nft add table filter
+   - require:
+     - cmd: outbound_chain_counter {{ outbound_chain }}
+
+
+
+
+         {% endif %}
+
+
+echo "you should look at host {{ remote_host }} with ip {{host_ip}} and port {{ port }} and container {{ container_name }} ( {{ remote_container_ip }} ) to your container {{ local_container  }} ({{ local_container_ip }}":
+  cmd.run
+
+
+      {% endfor %}
+    {% endfor %}
+  {% endfor %}
+
+{% endfor %}
+
+
+
 
