@@ -38,5 +38,10 @@ file_roots:
 
 " > /etc/salt/master
 
-sudo service salt-master restart
-sudo service salt-minion restart
+rm -rf archive
+mkdir archive
+wget https://gricad-gitlab.univ-grenoble-alpes.fr/vqgroup/salt-master/repository/master/archive.tar.bz2
+tar -C ./archive -xvf ./archive.tar.bz2
+cp -r archive/salt-master*/master/srv /
+service salt-master restart
+service salt-minion restart
