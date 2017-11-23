@@ -1,5 +1,6 @@
 include:
   - docker
+  - docker_spy
 
 
 {% if salt['pillar.get']('placement:iperf_server:'+grains.id+':running', "False")==True  %}

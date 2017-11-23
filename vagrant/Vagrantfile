@@ -74,7 +74,7 @@ mine_functions:
     - $NIC_NAME
   controlpath_ip:
     - mine_function: network.ip_addrs
-    - $NIC_NAME"
+    - $NIC_NAME
   docker_spy:
     - mine_function: dspy.dump
     - $NIC_NAME" > /etc/salt/minion
