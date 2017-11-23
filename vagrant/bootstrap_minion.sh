@@ -1,5 +1,6 @@
 #$1 is the master ip
 #$2 is the nic name
+#$3 is the minion id
 
 echo "$1 salt" >> /etc/hosts
 apt-get update
@@ -11,6 +12,7 @@ apt-get update && apt-get install salt-minion python-pygit2 python-git --yes
 
 
 echo "rejected_retry: True
+id: $3
 mine_interval: 1
 hostsfile:
   alias: controlpath_ip

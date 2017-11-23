@@ -2,14 +2,14 @@ include:
   - docker
 
 
-{% if salt['pillar.get']('placement:cassandra:'+grains.id, "False")==True  %}
+{% if grains.id in salt['pillar.get']('placement:cassandra:hosts')  %}
 
-cassandra:latest:
+cassandra:{{ salt['pillar.get']("placement:cassandra:version")}}:
   docker_image.present:
-    - require: 
+    - require:
       - sls: docker
   docker_container.running:
-    - name: cass 
+    - name: cass
     - image: cassandra:latest
     - port_bindings:
       - 7000:7000
@@ -18,7 +18,6 @@ cassandra:latest:
       - 9042:9042
       - 9160:9160
     - environment:
-      - CASSANDRA_SEEDS : vm1
+      - CASSANDRA_SEEDS : {{ salt['pillar.get']('placement:cassandra:hosts')|join(', ') }}
 
-
-{% endif %}  
+{% endif %}

@@ -2,30 +2,29 @@ monitoring:
   - monitoring_vm: salt
 placement:
   - cassandra:
-    - erods-ds-5.u-ga.fr: true
-    - erods-ds-6.u-ga.fr: true
-    - erods-ds-7.u-ga.fr: true
+    - hosts:
+      - erods-ds-5.u-ga.fr
+      - erods-ds-6.u-ga.fr
+      - erods-ds-7.u-ga.fr
+      - erods-ds-8.u-ga.fr
+    - version: 3.11.1
   - kafka:
-    - erods-ds-5.u-ga.fr: true
-    - erods-ds-6.u-ga.fr: true
-    - erods-ds-8.u-ga.fr: true
+    - hosts:
+      - erods-ds-5.u-ga.fr
+      - erods-ds-6.u-ga.fr
+      - erods-ds-8.u-ga.fr
   - spark:
-    - erods-ds-5.u-ga.fr: true
-    - erods-ds-6.u-ga.fr: true
+    - hosts:
+      - erods-ds-5.u-ga.fr
+      - erods-ds-6.u-ga.fr
   - iperf_server:
-    - erods-ds-5.u-ga.fr:
-      - running: True
-    - erods-ds-6.u-ga.fr:
-      - running: True
-    - erods-ds-7.u-ga.fr:
-      - running: True
+    - erods-ds-5.u-ga.fr
+    - erods-ds-6.u-ga.fr
+    - erods-ds-7.u-ga.fr
   - iperf_client:
     - erods-ds-7.u-ga.fr:
-      - running: True
       - target:  erods-ds-5.u-ga.fr
     - erods-ds-8.u-ga.fr:
-      - running: True
       - target:  erods-ds-6.u-ga.fr
     - erods-ds-6.u-ga.fr:
-      - running: True
       - target: erods-ds-5.u-ga.fr
