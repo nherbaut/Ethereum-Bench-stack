@@ -10,8 +10,7 @@ apt-get update && apt-get install salt-minion python-pygit2 python-git --yes
 
 
 
-echo "\n
-rejected_retry: True
+echo "rejected_retry: True
 mine_interval: 1
 hostsfile:
   alias: controlpath_ip
