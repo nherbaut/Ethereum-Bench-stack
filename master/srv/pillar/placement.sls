@@ -1,35 +1,31 @@
 monitoring:
-  - monitoring_vm: vm1
+  - monitoring_vm: erods-ds-1.u-ga.fr
 placement:
   - cassandra:
-    - vm1: true
-    - vm2: true
-    - vm3: true
+    - erods-ds-5.u-ga.fr: true
+    - erods-ds-6.u-ga.fr: true
+    - erods-ds-7.u-ga.fr: true
   - kafka:
-    - vm1: true
-    - vm2: true
-    - vm4: true
+    - erods-ds-5.u-ga.fr: true
+    - erods-ds-6.u-ga.fr: true
+    - erods-ds-8.u-ga.fr: true
   - spark:
-    - vm1: true
-    - vm2: true
+    - erods-ds-5.u-ga.fr: true
+    - erods-ds-6.u-ga.fr: true
   - iperf_server:
-    - vm1:
+    - erods-ds-5.u-ga.fr:
       - running: True
-    - vm2:
+    - erods-ds-6.u-ga.fr:
       - running: True
-    - vm3:
+    - erods-ds-7.u-ga.fr:
       - running: True
   - iperf_client:
-    - vm3:
+    - erods-ds-7.u-ga.fr:
       - running: True
-      - target:  vm1
-    - vm4:
+      - target:  erods-ds-5.u-ga.fr
+    - erods-ds-8.u-ga.fr:
       - running: True
-      - target:  vm2
-    - vm2:
+      - target:  erods-ds-6.u-ga.fr
+    - erods-ds-6.u-ga.fr:
       - running: True
-      - target: vm1
-  
-    
-
-  
+      - target: erods-ds-5.u-ga.fr
