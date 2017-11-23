@@ -1,5 +1,5 @@
 monitoring:
-  - monitoring_vm: erods-ds-1.u-ga.fr
+  - monitoring_vm: salt
 placement:
   - cassandra:
     - erods-ds-5.u-ga.fr: true
