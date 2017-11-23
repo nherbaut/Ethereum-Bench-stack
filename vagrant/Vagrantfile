@@ -51,7 +51,7 @@ Vagrant.configure("2") do |config|
     vm1.vm.provision "file", source: "../master/.", destination: "/tmp/master"
     vm1.vm.provision "file", source: "../minion/.", destination: "/tmp/minion"
 
-  vm1.vm.provision "path" : "bootstrap_master.sh",  env: [master_ip, nic_name]
+  vm1.vm.provision "shell", path : "bootstrap_master.sh",  args: [master_ip, nic_name]
 
   SHELL
 
@@ -66,7 +66,7 @@ begin
 	     node.vm.hostname="vm%d" % [i]
 	     node.vm.network :private_network, ip: vagrant_config["base_ip"] % [100+i]
        node.vm.provision "file", source: "../minion/.", destination: "/tmp/minion"
-	     node.vm.provision "path" : "bootstrap_minion.sh" , args: [master_ip,  nic_name]
+	     node.vm.provision "shell", path : "bootstrap_minion.sh", args: [master_ip,  nic_name]
 
 
       end
