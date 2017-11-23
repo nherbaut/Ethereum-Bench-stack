@@ -1,6 +1,7 @@
 # nftables installation
 
-
+apt-transport-https:
+  pkg.installed
 
 nftables-ppa:
   pkgrepo.managed:
@@ -12,6 +13,8 @@ nftables-ppa:
     - keyserver: keyserver.ubuntu.com
     - required_in:
       - nftables
+    - require:
+      - apt-transport-https
 
 
 nftables:
