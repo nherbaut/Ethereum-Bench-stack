@@ -1,4 +1,10 @@
+include:
+  - docker
+
 python-setuptools:
+  pkg.installed
+
+python-dev:
   pkg.installed
 
 
