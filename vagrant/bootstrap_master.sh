@@ -46,3 +46,5 @@ tar -C ./archive -xvf ./archive.tar.bz2
 cp -r archive/salt-master*/master/srv /
 service salt-master restart
 service salt-minion restart
+sleep 3
+salt "*" test.ping

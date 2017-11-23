@@ -3,28 +3,28 @@ monitoring:
 placement:
   - cassandra:
     - hosts:
-      - erods-ds-5.u-ga.fr
-      - erods-ds-6.u-ga.fr
-      - erods-ds-7.u-ga.fr
-      - erods-ds-8.u-ga.fr
+      - h5
+      - h6
+      - h7
+      - h8
     - version: 3.11.1
   - kafka:
     - hosts:
-      - erods-ds-5.u-ga.fr
-      - erods-ds-6.u-ga.fr
-      - erods-ds-8.u-ga.fr
+      - h5
+      - h6
+      - h8
   - spark:
     - hosts:
-      - erods-ds-5.u-ga.fr
-      - erods-ds-6.u-ga.fr
+      - h5
+      - h6
   - iperf_server:
-    - erods-ds-5.u-ga.fr
-    - erods-ds-6.u-ga.fr
-    - erods-ds-7.u-ga.fr
+    - h5
+    - h6
+    - h7
   - iperf_client:
-    - erods-ds-7.u-ga.fr:
-      - target:  erods-ds-5.u-ga.fr
-    - erods-ds-8.u-ga.fr:
-      - target:  erods-ds-6.u-ga.fr
-    - erods-ds-6.u-ga.fr:
-      - target: erods-ds-5.u-ga.fr
+    - h7:
+      - target:  h5
+    - h8:
+      - target:  h6
+    - h6:
+      - target: h5
