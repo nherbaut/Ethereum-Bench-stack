@@ -9,8 +9,6 @@ echo "deb http://repo.saltstack.com/apt/ubuntu/16.04/amd64/latest xenial main" >
 apt-get update && apt-get install salt-minion python-pygit2 python-git --yes
 
 
-cp -r /tmp/minion/etc/* /etc/
-
 
 echo "\n
 rejected_retry: True
