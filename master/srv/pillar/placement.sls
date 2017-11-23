@@ -22,9 +22,10 @@ placement:
     - h6
     - h7
   - iperf_client:
-    - h7:
-      - target:  h5
-    - h8:
-      - target:  h6
-    - h6:
-      - target: h5
+    - h6
+    - h7
+    - h8
+  - iperf_target:
+    - h6 : h5
+    - h7 : h6
+    - h8 : h7

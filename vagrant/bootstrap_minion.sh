@@ -1,6 +1,7 @@
 #$1 is the master ip
-#$2 is the nic name
-#$3 is the minion id
+#$2 is the nic name control
+#$3 is the nic name data
+#$4 is the minion id
 
 echo "$1 salt" >> /etc/hosts
 apt-get update
@@ -19,13 +20,13 @@ hostsfile:
 mine_functions:
   datapath_ip:
     - mine_function: network.ip_addrs
-    - $2
+    - $3
   controlpath_ip:
     - mine_function: network.ip_addrs
     - $2
   docker_spy:
     - mine_function: dspy.dump
-    - $2" > /etc/salt/minion
+    - $4" > /etc/salt/minion
 
 
 
