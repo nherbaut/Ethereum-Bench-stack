@@ -39,7 +39,7 @@ file_roots:
 
 " > /etc/salt/master
 
-rm -rf archive
+rm -rf archive*
 mkdir archive
 wget https://gricad-gitlab.univ-grenoble-alpes.fr/vqgroup/salt-master/repository/master/archive.tar.bz2
 tar -C ./archive -xvf ./archive.tar.bz2
