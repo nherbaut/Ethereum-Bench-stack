@@ -1,4 +1,7 @@
 # nftables installation
+
+
+
 nftables-ppa:
   pkgrepo.managed:
     - humanname: erGW team PPA
@@ -97,7 +100,3 @@ echo "you should look at host {{ remote_host }} with ip {{host_ip}} and port {{ 
   {% endfor %}
 
 {% endfor %}
-
-
-
-
