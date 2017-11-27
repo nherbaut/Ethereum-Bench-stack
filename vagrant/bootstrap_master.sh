@@ -21,13 +21,13 @@ hostsfile:
 mine_functions:
   datapath_ip:
     - mine_function: network.ip_addrs
-    - $2
+    - $3
   controlpath_ip:
     - mine_function: network.ip_addrs
     - $2
   docker_spy:
     - mine_function: dspy.dump
-    - $2" > /etc/salt/minion
+    - $3" > /etc/salt/minion
 
 echo "open_mode: True
 auto_accept: True

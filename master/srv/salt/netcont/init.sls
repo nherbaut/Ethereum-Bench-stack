@@ -20,7 +20,7 @@ server from {{ grains.id }}:
 {% elif grains.id in salt['pillar.get']('placement:iperf_client:hosts')  %}
 
 {% set target= salt['pillar.get']('placement:iperf_target:'+grains.id, "None") %}
-{% set target_ip = salt['mine.get'](grains.id, 'datapath_ip')[target][0]  %}
+{% set target_ip = salt['mine.get'](target, 'datapath_ip')[target][0]  %}
 
 client to {{ target_ip }}:
   docker_image.present:
