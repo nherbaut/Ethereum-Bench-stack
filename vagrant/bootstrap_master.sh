@@ -1,5 +1,6 @@
 #$1 is the master ip
-#$2 is the nic name
+#$2 is the nic name (control)
+#$3 is the nic name (data)
 
 echo "$1 salt" >> /etc/hosts
 apt-get update
