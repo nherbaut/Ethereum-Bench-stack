@@ -1,6 +1,3 @@
-{% set monitoring_host := salt["pillar.get"]("monitoring:host") %}
-{% set monitoring_host_ip := salt['mine.get'](monitoring_host, 'controlpath_ip')[monitoring_host][0]  %}
-
 include:
   - docker
 
@@ -16,12 +13,16 @@ influxdb:latest:
        - sls: docker
 
 
+{% set monitoring_host = salt['pillar.get']('monitoring:host') %}
+
+{% set monitoring_host_ip = salt['mine.get'](grains.id,"controlpath_ip")[grains.id][0]  %}
+
 
 chronograf:
   docker_container.running:
     - image: chronograf:latest
     - port_bindings:
-      - {{  }}:8888:8888
+      - {{ monitoring_host_ip }}:8888:8888
     - link: influxdb
     - environment:
       - INFLUXDB_URL=http://{{ monitoring_host_ip  }}:8086
