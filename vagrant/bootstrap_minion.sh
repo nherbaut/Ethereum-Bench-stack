@@ -13,7 +13,7 @@ apt-get update && apt-get install salt-minion python-pygit2 python-git --yes
 
 
 echo "rejected_retry: True
-id: $3
+id: $4
 mine_interval: 1
 hostsfile:
   alias: controlpath_ip
@@ -26,7 +26,7 @@ mine_functions:
     - $2
   docker_spy:
     - mine_function: dspy.dump
-    - $4" > /etc/salt/minion
+    - $3" > /etc/salt/minion
 
 
 
