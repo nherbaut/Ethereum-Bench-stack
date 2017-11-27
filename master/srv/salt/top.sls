@@ -1,6 +1,6 @@
 base:
   "*":
-    - hostsfile
+    - etchostname
     - openssh
     - docker
     - spark

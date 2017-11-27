@@ -18,15 +18,13 @@ placement:
       - h5
       - h6
   - iperf_server:
-    - hosts:
-      - h5
-      - h6
-      - h7
+    - h5
+    - h6
+    - h7
   - iperf_client:
-    - hosts:
-      - h6
-      - h7
-      - h8
+    - h6
+    - h7
+    - h8
   - iperf_target:
     - h6 : h5
     - h7 : h6
