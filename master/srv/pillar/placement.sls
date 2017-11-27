@@ -1,5 +1,5 @@
 monitoring:
-  - monitoring_vm: salt
+  - host: salt
 placement:
   - cassandra:
     - hosts:

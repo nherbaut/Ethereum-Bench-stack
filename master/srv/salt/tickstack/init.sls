@@ -1,3 +1,6 @@
+{% set monitoring_host := salt["pillar.get"]("monitoring:host") %}
+{% set monitoring_host_ip := salt['mine.get'](monitoring_host, 'controlpath_ip')[monitoring_host][0]  %}
+
 include:
   - docker
 
@@ -18,10 +21,10 @@ chronograf:
   docker_container.running:
     - image: chronograf:latest
     - port_bindings:
-      - {{ salt['mine.get']('vm1', 'controlpath_ip')['vm1'][0] }}:8888:8888
+      - {{  }}:8888:8888
     - link: influxdb
     - environment:
-      - INFLUXDB_URL=http://{{ salt['mine.get']('vm1', 'controlpath_ip')['vm1'][0]   }}:8086
+      - INFLUXDB_URL=http://{{ monitoring_host_ip  }}:8086
     - require:
       - chronograf:latest
       - influxdb:latest
@@ -31,8 +34,6 @@ influxdb:
       - image: influxdb:latest
       - detach: True
       - port_bindings:
-        - {{ salt['mine.get']('vm1', 'controlpath_ip')['vm1'][0] }}:8086:8086
+        - {{ monitoring_host_ip  }}:8086:8086
       - require:
         - influxdb:latest
-        
-
