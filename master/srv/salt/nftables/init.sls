@@ -49,8 +49,8 @@ prerouting:
          {% set remote_container_ip=contnet[remote_host][container_name]['private_ip'] %}
          {% set local_container_ip=local_containers[local_container]['private_ip'] %}
          {% if remote_host != grains.id %}
-           {% set outbound_chain=remote_host+"_"+container_name+"_"+grains.id+"_"+local_container %}
-           {% set inbound_chain=grains.id+"_"+local_container+"_"+remote_host+"_"+container_name %}
+           {% set outbound_chain=remote_host+"_"+container_name+"_"+grains.id+"_"+local_container+'_%d'%port %}
+           {% set inbound_chain=grains.id+"_"+local_container+"_"+remote_host+"_"+container_name+"_%d"%port %}
 
 inbound_chain {{ inbound_chain }}:
   cmd.run:

@@ -16,8 +16,9 @@ server from {{ grains.id }}:
     - cmd: iperf -s -p 5000
     - port_bindings:
       - 5000:5000
+{% endif %}
 
-{% elif grains.id in salt['pillar.get']('placement:iperf_client:hosts')  %}
+{% if grains.id in salt['pillar.get']('placement:iperf_client:hosts')  %}
 
 {% set target= salt['pillar.get']('placement:iperf_target:'+grains.id, "None") %}
 {% set target_ip = salt['mine.get'](target, 'datapath_ip')[target][0]  %}

@@ -18,6 +18,10 @@ cassandra:{{ salt['pillar.get']("placement:cassandra:version")}}:
       - 9042:9042
       - 9160:9160
     - environment:
-      - CASSANDRA_SEEDS : {{ salt['pillar.get']('placement:cassandra:hosts')|join(', ') }}
+      - CASSANDRA_BROADCAST_ADDRESS : {{ salt['mine.get'](grains.id,"datapath_ip")[grains.id][0] }}
+        {% if grains.id != "h5" %}
+      - CASSANDRA_SEEDS : {{ salt['mine.get']('h5',"datapath_ip")['h5'][0] }}
+        {% endif %}
+                          
 
 {% endif %}
