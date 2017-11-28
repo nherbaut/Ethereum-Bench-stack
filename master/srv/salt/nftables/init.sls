@@ -3,18 +3,30 @@
 apt-transport-https:
   pkg.installed
 
-#nftables-ppa:
-#  pkgrepo.managed:
-#    - humanname: erGW team PPA
-#    - name: deb http://ppa.launchpad.net/ergw/backports/ubuntu xenial main
-#    - dist: xenial
-#    - file: /etc/apt/sources.list.d/nftables.list
-#    - keyid: 01305F4CF29AFD6AD18309C074EA811C58A14C3D
-#    - keyserver: keyserver.ubuntu.com
-#    - required_in:
-#      - nftables
-#    - require:
-#      - apt-transport-https
+
+python-software-properties:
+  pkg.installed
+
+
+software-properties-common:
+  pkg.installed
+
+
+
+nftables-ppa:
+  pkgrepo.managed:
+    - humanname: erGW team PPA
+    - name: deb http://ppa.launchpad.net/ergw/backports/ubuntu xenial main
+    - dist: xenial
+    - file: /etc/apt/sources.list.d/nftables.list
+    - keyid: 01305F4CF29AFD6AD18309C074EA811C58A14C3D
+    - keyserver: keyserver.ubuntu.com
+    - required_in:
+      - nftables
+    - require:
+      - apt-transport-https
+      - python-software-properties
+      - software-properties-common
 
 
 nftables:
@@ -48,7 +60,7 @@ prerouting:
          {% set host_ip=contnet[remote_host][container_name]['ip'] %}
          {% set remote_container_ip=contnet[remote_host][container_name]['private_ip'] %}
          {% set local_container_ip=local_containers[local_container]['private_ip'] %}
-         {% if remote_host != grains.id %}
+         {% if remote_host != grains.id or container_name!=local_container %}
            {% set outbound_chain=remote_host+"_"+container_name+"_"+grains.id+"_"+local_container+'_%d'%port %}
            {% set inbound_chain=grains.id+"_"+local_container+"_"+remote_host+"_"+container_name+"_%d"%port %}
 

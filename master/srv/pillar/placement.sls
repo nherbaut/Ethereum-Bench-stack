@@ -13,16 +13,13 @@ placement:
       - h5
       - h6
       - h7
+      - h8
     - version: 3.4.11
     - host_zooid_mapping:
       - h5 : 1 
       - h6 : 2
       - h7 : 3
-  - kafka:
-    - hosts:
-      - h5
-      - h6
-      - h8
+      - h8 : 4
   - spark:
     - hosts:
       - h5
