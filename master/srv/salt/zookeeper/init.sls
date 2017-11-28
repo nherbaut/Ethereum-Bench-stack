@@ -30,9 +30,22 @@ zookeeper:{{ salt['pillar.get']("placement:zookeeper:version")}}:
       - ZOO_MY_ID: {{ salt['pillar.get']("placement:zookeeper:host_zooid_mapping:%s"%grains.id)}} 
       - ZOO_SERVERS: {{ zoospec|join(" ")}}
 
+kafka:
+  docker_image.present:
+    - name: nherbaut/kafka:latest
+    - require:
+      - sls: docker
+  docker_container.running:
+    - name: kafka
+    - image: nherbaut/kafka:latest
+    - port_bindings:
+      - {{ salt['mine.get'](grains.id,"datapath_ip")[grains.id][0] }}:9092:9092
+    - environment:
+      - KAFKA_ADVERTISED_HOST_NAME: {{ salt['mine.get'](grains.id,"datapath_ip")[grains.id][0] }}
+      - KAFKA_ZOOKEEPER_CONNECT : {{ salt['mine.get'](grains.id,"datapath_ip")[grains.id][0] }}:2181
+    - require:
+      - docker_container: zookeeper:{{ salt['pillar.get']("placement:zookeeper:version")}}
 
-
-#     - ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
 
 
 {% endif %}
