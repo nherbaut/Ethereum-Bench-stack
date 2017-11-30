@@ -1,21 +1,15 @@
-/root/docker-compose.yaml:
-  file.managed:
-    - source:  salt://experiment_data/docker-compose.yaml
-    - template: jinja
+bible:
+  archive.extracted:
+  - name: /root/lorem
+  - source: salt://experiment_data/bible.txt.zip
+  - enforce_toplevel: False
 
-
-/root/launch_stack.sh:
+/root/produce.sh:
   file.managed:
-    - source: salt://experiment_data/launch_stack.sh
+    - source: salt://experiment_data/produce.sh
     - template: jinja
     - mode: 0755
 
-
-
-/root/kill_stack.sh:
-  file.managed:
-    - source: salt://experiment_data/kill_stack.sh
-    - mode: 0755
 
 /root/reset_monitoring.sh:
   file.managed:

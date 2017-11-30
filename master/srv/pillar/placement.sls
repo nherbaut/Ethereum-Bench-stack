@@ -8,6 +8,7 @@ placement:
       - h7
       - h8
     - version: 3.11.1
+    - first_cqlsh_host: h5
   - zookeeper:
     - hosts:
       - h5
@@ -20,21 +21,13 @@ placement:
       - h6 : 2
       - h7 : 3
       - h8 : 4
+  - kafka:
+    - replication_factor : 3
+    - partition_factor: 6
+    - topic_name: words
   - spark:
-    - hosts:
+    - slaves:
       - h5
       - h6
-  - iperf_server:
-    - hosts:
-      - h5
-      - h6
-      - h7
-  - iperf_client:
-    - hosts:
-      - h6
-      - h7
-      - h8
-  - iperf_target:
-    - h6 : h5
-    - h7 : h6
-    - h8 : h7
+    - master: h7
+    - image : nherbaut/spark-wordcount:latest

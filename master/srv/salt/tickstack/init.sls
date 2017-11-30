@@ -1,3 +1,5 @@
+{% if grains.id ==  salt['pillar.get']('monitoring:host')   %}
+
 include:
   - docker
 
@@ -53,3 +55,5 @@ nherbaut/flowmatrix:
       - INFLUX_DB_HOST: {{ monitoring_host_ip  }}
     - require:
       - docker_container: influxdb
+
+{% endif %}
