@@ -1,5 +1,7 @@
 # nftables installation
 
+
+{% if grains.id != salt["pillar.get"]("monitoring:host") %}
 apt-transport-https:
   pkg.installed
 
@@ -115,3 +117,4 @@ echo "you should look at host {{ remote_host }} with ip {{host_ip}} and port {{ 
   {% endfor %}
 
 {% endfor %}
+{% endif %}
