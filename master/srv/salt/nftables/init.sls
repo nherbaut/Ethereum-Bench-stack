@@ -1,5 +1,7 @@
 # nftables installation
 
+
+{% if grains.id != salt["pillar.get"]("monitoring:host") %}
 apt-transport-https:
   pkg.installed
 
@@ -117,3 +119,4 @@ outbound_jump {{ host_ip }} . {{ local_container_ip }} .  {{ port }} -> {{ outbo
   {% endfor %}
 
 {% endfor %}
+{% endif %}
