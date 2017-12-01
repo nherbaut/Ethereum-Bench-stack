@@ -53,63 +53,65 @@ prerouting:
 
 {% set contnet = salt['mine.get']("*","docker_spy") %}
 {% set local_containers = salt['mine.get'](grains.id,"docker_spy")[grains.id]|default ([]) %}
+
 {% for remote_host in contnet  %}
-  {% for container_name in contnet[remote_host] %}
-    {% for port in contnet[remote_host][container_name]["ports"] %}
+  {% for remote_container, remote_container_config in contnet[remote_host].iteritems() %}
+    {% for port in remote_container_config["ports"] %}
       {% for local_container in local_containers  %}
-         {% set host_ip=contnet[remote_host][container_name]['ip'] %}
-         {% set remote_container_ip=contnet[remote_host][container_name]['private_ip'] %}
+         {% set host_ip=remote_container_config['ip'] %}
+         {% set remote_container_ip=remote_container_config['private_ip'] %}
          {% set local_container_ip=local_containers[local_container]['private_ip'] %}
-         {% if remote_host != grains.id or container_name!=local_container %}
-           {% set outbound_chain=remote_host+"_"+container_name+"_"+grains.id+"_"+local_container+'_%d'%port %}
-           {% set inbound_chain=grains.id+"_"+local_container+"_"+remote_host+"_"+container_name+"_%d"%port %}
+         {% if remote_host != grains.id or remote_container!=local_container %}
+           {% set outbound_chain=remote_host+"_"+remote_container+"_"+grains.id+"_"+local_container+'_%d'%port %}
+           {% set inbound_chain=grains.id+"_"+local_container+"_"+remote_host+"_"+remote_container+"_%d"%port %}
+
+
+
 
 inbound_chain {{ inbound_chain }}:
   cmd.run:
     - name: nft add chain filter {{ inbound_chain }}
     - require:
       - cmd: prerouting
+    - required_in:
+      - cmd: inbound_chain_counter {{ inbound_chain }}
+      - cmd: inbound_jump {{ host_ip }} . {{ local_container_ip }} .  {{ port }}  -> {{ inbound_chain }}
+
+
+inbound_chain_counter {{ inbound_chain }}:
+  cmd.run:
+    - name: nft add rule filter {{ inbound_chain }} counter
+
+
+
+inbound_jump {{ host_ip }} . {{ local_container_ip }} .  {{ port }}  -> {{ inbound_chain }}:
+  cmd.run:
+   - name: nft add rule filter prerouting  ip saddr . ip daddr . tcp sport { {{ host_ip }} . {{ local_container_ip }} .  {{ port }} }   jump {{ inbound_chain }}
+
+
+
 
 outbound_chain {{ outbound_chain }}:
   cmd.run:
     - name: nft add chain filter {{ outbound_chain }}
     - require:
       - cmd: prerouting
+    - required_in:
+      - cmd: outbound_jump {{ host_ip }} . {{ local_container_ip }} .  {{ port }} -> {{ outbound_chain }}
+      - cmd:  outbound_chain_counter {{ outbound_chain }}
 
-inbound_chain_counter {{ inbound_chain }}:
-  cmd.run:
-    - name: nft add rule filter {{ inbound_chain }} counter
-    - require:
-      - cmd: inbound_chain {{ inbound_chain }}
+
 
 outbound_chain_counter {{ outbound_chain }}:
   cmd.run:
     - name: nft add rule filter {{ outbound_chain }} counter
-    - require:
-      - cmd: outbound_chain {{ outbound_chain }}
 
 
-nft add rule filter prerouting  ip saddr . ip daddr . tcp sport { {{ host_ip }} . {{ local_container_ip }} .  {{ port }} }   jump {{ inbound_chain }}:
+outbound_jump {{ host_ip }} . {{ local_container_ip }} .  {{ port }} -> {{ outbound_chain }} :
   cmd.run:
-   - require:
-     - cmd: inbound_chain_counter {{ inbound_chain }}
-
-
-nft add rule filter prerouting  ip daddr . ip saddr . tcp dport { {{ host_ip }} . {{ local_container_ip }} .  {{ port }} }   jump {{ outbound_chain }}:
-  cmd.run:
-   - require:
-     - cmd: outbound_chain_counter {{ outbound_chain }}
-
-
-
+   - name: nft add rule filter prerouting  ip daddr . ip saddr . tcp dport { {{ host_ip }} . {{ local_container_ip }} .  {{ port }} }   jump {{ outbound_chain }}
 
          {% endif %}
-
-
-echo "you should look at host {{ remote_host }} with ip {{host_ip}} and port {{ port }} and container {{ container_name }} ( {{ remote_container_ip }} ) to your container {{ local_container  }} ({{ local_container_ip }}":
-  cmd.run
-
-
       {% endfor %}
     {% endfor %}
   {% endfor %}

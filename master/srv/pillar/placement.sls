@@ -5,6 +5,7 @@ placement:
     - hosts:
       - h5
       - h6
+      - h7
       - h8
     - version: 3.11.1
     - first_cqlsh_host: h5
