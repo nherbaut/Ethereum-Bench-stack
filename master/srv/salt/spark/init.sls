@@ -17,6 +17,7 @@ spark_master:
     - hostname: spark
     - image: {{ salt['pillar.get']('placement:spark:image') }}
     - port_bindings:
+      - 4040:4040
       - 7077:7077
       - 6066:6066
       - 8080:8080
@@ -24,12 +25,17 @@ spark_master:
       - 41000-41004:41000-41004
       - 42000-42004:42000-42004
       - 43000-43004:43000-43004
+      - 44000-44004:44000-44004
+      - 45000-45004:45000-45004
     - hostname: {{ grains.id }}
     - environment:
       - SPARK_BLOCK_MANAGER_PORT: 40000
+      - SPARK_BROADCAST_PORT: 44000
       - SPARK_DRIVER_PORT: 41000
       - SPARK_EXECUTOR_PORT: 42000
       - SPARK_FILESERVER_PORT: 43000
+      - SPARK_BROADCAST_PORT: 44000
+      - SPART_BLOCKMANAGER_PORT: 45000
       - SPARK_PORT_MAXRETRIES: 4
       - SPARK_MASTER_HOST : {{ master_hostname }}
       - SPARK_MASTER_IP : 0.0.0.0 
@@ -37,8 +43,8 @@ spark_master:
       - SPARK_PUBLIC_DNS : {{ grains.id }}
       - SPARK_LOCAL_HOSTNAME: {{ grains.id }}
       - SPARK_IDENT_STRING : {{ grains.id }}
-#    - command: bash -c 'tail -f `SPARK_MASTER_IP=0.0.0.0 SPARK_MASTER_HOST={{ grains.id }} /opt/spark/sbin/start-master.sh --port  |sed -rn "s/.*(      \/opt.*out)/\1/p"`'
-     - command: bash -c 'sleep 5000'
+    - command: bash -c 'tail -f `SPARK_MASTER_IP=0.0.0.0 SPARK_MASTER_HOST={{ grains.id }} /opt/spark/sbin/start-master.sh  |sed -rn "s/.*(\/opt.*out)/\1/p"`'
+#    - command: bash -c 'sleep 5000'
 
 
 #since salt do not support add-host yet, work around it
@@ -69,7 +75,16 @@ spark_slave:
       - 6066:6066
       - 8081:8081
       - 2606:2606
+      - 45000:45004
     - environment:
+      - SPARK_BLOCK_MANAGER_PORT: 40000
+      - SPARK_BROADCAST_PORT: 44000
+      - SPARK_DRIVER_PORT: 41000
+      - SPARK_EXECUTOR_PORT: 42000
+      - SPARK_FILESERVER_PORT: 43000
+      - SPARK_BROADCAST_PORT: 44000
+      - SPART_BLOCKMANAGER_PORT: 45000
+      - SPARK_PORT_MAXRETRIES: 4
       - SPARK_DRIVER_HOST : {{ grains.id }}
       - SPARK_PUBLIC_DNS : {{ grains.id }}
       - SPARK_LOCAL_HOSTNAME: {{ grains.id }}

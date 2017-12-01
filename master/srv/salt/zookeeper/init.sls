@@ -1,6 +1,3 @@
-include:
-  - docker
-
 {# set zookeeper_image="nherbaut/netcont:sleep" #}
 {# set kafka_image="nherbaut/netcont:sleep" #}
 
@@ -23,13 +20,14 @@ include:
   {% endfor %}
 
 
-zookeeper:{{ salt['pillar.get']("placement:zookeeper:version")}}:
+zookeeper_image_pull:{{ salt['pillar.get']("placement:zookeeper:version")}}:
   docker_image.present:
-    - require:
-      - sls: docker
+    - name: zookeeper:{{ salt['pillar.get']("placement:zookeeper:version")}}
+
+zookeeper:{{ salt['pillar.get']("placement:zookeeper:version")}}:
   docker_container.running:
     - name: zoo
-    - image: {{ zookeeper_image }}
+    - image: zookeeper:{{ salt['pillar.get']("placement:zookeeper:version")}}
     - port_bindings:
       - {{ salt['mine.get'](grains.id,"datapath_ip")[grains.id][0] }}:2181:2181
       - {{ salt['mine.get'](grains.id,"datapath_ip")[grains.id][0] }}:2888:2888
@@ -37,12 +35,12 @@ zookeeper:{{ salt['pillar.get']("placement:zookeeper:version")}}:
     - environment:
       - ZOO_MY_ID: {{ salt['pillar.get']("placement:zookeeper:host_zooid_mapping:%s"%grains.id)}} 
       - ZOO_SERVERS: {{ zoospec|join(" ")}}
+    - require:
+      - docker_image: zookeeper_image_pull:{{ salt['pillar.get']("placement:zookeeper:version")}}
 
 kafka:
   docker_image.present:
     - name: {{ kafka_image }}
-    - require:
-      - sls: docker
   docker_container.running:
     - name: kafka
     - image: {{ kafka_image }}

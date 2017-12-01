@@ -5,7 +5,6 @@ placement:
     - hosts:
       - h5
       - h6
-      - h7
       - h8
     - version: 3.11.1
     - first_cqlsh_host: h5
@@ -13,14 +12,12 @@ placement:
     - hosts:
       - h5
       - h6
-      - h7
       - h8
     - version: 3.4.11
     - host_zooid_mapping:
       - h5 : 1 
       - h6 : 2
-      - h7 : 3
-      - h8 : 4
+      - h8 : 3
   - kafka:
     - replication_factor : 3
     - partition_factor: 6
@@ -28,6 +25,6 @@ placement:
   - spark:
     - slaves:
       - h5
-      - h6
+      - h8
     - master: h7
     - image : nherbaut/spark-wordcount:latest

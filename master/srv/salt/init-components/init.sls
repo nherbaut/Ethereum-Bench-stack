@@ -43,7 +43,7 @@ docker exec kafka bash -c '/opt/kafka*/bin/kafka-topics.sh --create --zookeeper 
 
 {% set spark_master_ip  = salt['mine.get'](grains.id,"datapath_ip")[grains.id][0] %}
 
-docker exec -d spark bash -c '/opt/spark/bin/spark-submit  --class org.apache.spark.examples.streaming.DirectKafkaWordCount   --master spark://{{spark_master_ip}}:7077  --deploy-mode client /opt/wordcount/spark-wordcount-1.0-jar-with-dependencies.jar  {{ cassandraspec|join(",") }} {{ topic_name }} {{ kafkaspec|join(",") }}':
+docker exec -d spark bash -c '/opt/spark/bin/spark-submit  --class org.apache.spark.examples.streaming.DirectKafkaWordCount   --master spark://{{spark_master_ip}}:7077  --conf spark.block.manager.port=40000 --conf spark.driver.port=41000 --conf spark.executor.port=42000 --conf spark.fileserver.port=43000 --conf spark.broadcast.port=44000 --conf spark.blockManager.port=45000 --conf spark.port.maxretries=4  --deploy-mode client /opt/wordcount/spark-wordcount-1.0-jar-with-dependencies.jar  {{ cassandraspec|join(",") }} {{ topic_name }} {{ kafkaspec|join(",") }}':
   cmd.run
 
 

@@ -17,4 +17,7 @@ bible:
     - template: jinja
     - mode: 0755
 
-
+/root/killall.sh:
+  file.managed:
+    - source: salt://experiment_data/killall.sh
+    - mode: 0755
