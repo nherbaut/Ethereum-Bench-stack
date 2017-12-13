@@ -9,7 +9,13 @@ echo "CONTROL NIC: $2"
 echo "DATA NIC: $3"
 echo "MINION ID: $4"
 
+#cleanup previous salt-stack repo
+echo "" > /etc/apt/sources.list.d/saltstack.list
+
+#register the master
 echo "$1 salt" >> /etc/hosts
+
+#install salt
 apt-get update
 wget -O - https://repo.saltstack.com/apt/debian/9/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
 rm -rf /etc/apt/sources.list.d/saltstack.list || true
