@@ -36,7 +36,7 @@ zookeeper:{{ salt['pillar.get']("placement:zookeeper:version")}}:
       - ZOO_MY_ID: {{ salt['pillar.get']("placement:zookeeper:host_zooid_mapping:%s"%grains.id)}} 
       - ZOO_SERVERS: {{ zoospec|join(" ")}}
     - require:
-      - docker_image: zookeeper_image_pull:{{ salt['pillar.get']("placement:zookeeper:version")}}
+      - cmd: zookeeper_image_pull:{{ salt['pillar.get']("placement:zookeeper:version")}}
 
 
 kafka_pull:
