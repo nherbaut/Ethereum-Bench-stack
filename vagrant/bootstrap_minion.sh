@@ -3,6 +3,12 @@
 #$3 is the nic name data
 #$4 is the minion id
 
+
+echo "MASTER IP: $1"
+echo "CONTROL NIC: $2"
+echo "DATA NIC: $3"
+echo "MINION ID: $4"
+
 echo "$1 salt" >> /etc/hosts
 apt-get update
 wget -O - https://repo.saltstack.com/apt/debian/9/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
