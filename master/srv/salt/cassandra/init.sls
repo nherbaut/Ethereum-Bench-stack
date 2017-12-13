@@ -1,5 +1,4 @@
-include:
-  - docker
+
 
 
 {% if grains.id in salt['pillar.get']('placement:cassandra:hosts')  %}
@@ -20,7 +19,7 @@ cassandra:{{ salt['pillar.get']("placement:cassandra:version")}}:
       - sls: docker
   docker_container.running:
     - name: cass
-    - image: cassandra:latest
+    - image: cassandra:{{ salt['pillar.get']("placement:cassandra:version")}}
     - port_bindings:
       - 7000:7000
       - 7001:7001
