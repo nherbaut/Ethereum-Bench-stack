@@ -2,9 +2,13 @@
 #$2 is the nic name (control)
 #$3 is the nic name (data)
 
+
 echo "MASTER IP: $1"
 echo "CONTROL NIC: $2"
 echo "DATA NIC: $3"
+
+
+echo "" > /etc/apt/sources.list.d/saltstack.list
 
 echo "$1 salt" >> /etc/hosts
 apt-get update
