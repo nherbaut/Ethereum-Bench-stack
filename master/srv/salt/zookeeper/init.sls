@@ -21,8 +21,8 @@
 
 
 zookeeper_image_pull:{{ salt['pillar.get']("placement:zookeeper:version")}}:
-  docker_image.present:
-    - name: zookeeper:{{ salt['pillar.get']("placement:zookeeper:version")}}
+  cmd.run:
+    - name: docker pull zookeeper:{{ salt['pillar.get']("placement:zookeeper:version")}}
 
 zookeeper:{{ salt['pillar.get']("placement:zookeeper:version")}}:
   docker_container.running:
@@ -38,9 +38,13 @@ zookeeper:{{ salt['pillar.get']("placement:zookeeper:version")}}:
     - require:
       - docker_image: zookeeper_image_pull:{{ salt['pillar.get']("placement:zookeeper:version")}}
 
+
+kafka_pull:
+  cmd.run:
+    -name: docker pull {{ kafka_image }}
+    
+    
 kafka:
-  docker_image.present:
-    - name: {{ kafka_image }}
   docker_container.running:
     - name: kafka
     - image: {{ kafka_image }}
@@ -51,6 +55,7 @@ kafka:
       - KAFKA_ZOOKEEPER_CONNECT : {{ kafspec|join(",") }}
     - require:
       - docker_container: zookeeper:{{ salt['pillar.get']("placement:zookeeper:version")}}
+      - cmd: kafka_pull
 
 
 
