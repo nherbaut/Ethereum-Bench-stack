@@ -13,7 +13,7 @@ echo "MINION ID: $4"
 echo "" > /etc/apt/sources.list.d/saltstack.list
 
 #register the master
-printf "\n$1 salt" >> /etc/hosts
+printf "\n$1 h0" >> /etc/hosts
 
 #install salt
 apt-get update
@@ -26,6 +26,7 @@ apt-get update && apt-get install salt-minion python-pygit2 python-git --yes
 
 echo "rejected_retry: True
 id: $4
+master: h0
 mine_interval: 1
 hostsfile:
   alias: controlpath_ip
