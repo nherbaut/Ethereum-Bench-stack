@@ -1,5 +1,4 @@
 
-
 {% if grains.id in salt['pillar.get']('placement:cassandra:hosts')  %}
 
 
@@ -12,8 +11,13 @@
 {% set first_node =  (grains.id == first_node_name ) %}
 
 
-cassandra:{{ salt['pillar.get']("placement:cassandra:version")}}:
-  docker_image.present: []
+cassandra_pulled:
+  docker_image.present:
+    - name: cassandra:{{ salt['pillar.get']("placement:cassandra:version")}}
+    - required_by:
+      - docker_container: cassandra_running
+
+cassandra_running:
   docker_container.running:
     - name: cass
     - image: cassandra:{{ salt['pillar.get']("placement:cassandra:version")}}
