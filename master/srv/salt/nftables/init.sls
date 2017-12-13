@@ -6,12 +6,12 @@ apt-transport-https:
   pkg.installed
 
 
-python-software-properties:
-  pkg.installed
+#python-software-properties:
+#  pkg.installed
 
 
-software-properties-common:
-  pkg.installed
+#software-properties-common:
+#  pkg.installed
 
 
 
