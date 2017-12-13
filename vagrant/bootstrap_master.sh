@@ -1,11 +1,12 @@
 #$1 is the master ip
 #$2 is the nic name (control)
 #$3 is the nic name (data)
-
+#$4 is the minion id
 
 echo "MASTER IP: $1"
 echo "CONTROL NIC: $2"
 echo "DATA NIC: $3"
+echo "Minion id: $4"
 
 
 echo "" > /etc/apt/sources.list.d/saltstack.list
@@ -20,7 +21,7 @@ apt-get update
 apt-get install salt-master salt-minion python-pygit2 python-git --yes
 
 echo "rejected_retry: True
-
+id: $4
 mine_interval: 1
 
 hostsfile:
