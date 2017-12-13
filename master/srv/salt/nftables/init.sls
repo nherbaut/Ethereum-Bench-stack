@@ -15,20 +15,20 @@ software-properties-common:
 
 
 
-nftables-ppa:
-  pkgrepo.managed:
-    - humanname: erGW team PPA
-    - name: deb http://ppa.launchpad.net/ergw/backports/ubuntu xenial main
-    - dist: xenial
-    - file: /etc/apt/sources.list.d/nftables.list
-    - keyid: 01305F4CF29AFD6AD18309C074EA811C58A14C3D
-    - keyserver: keyserver.ubuntu.com
-    - required_in:
-      - nftables
-    - require:
-      - apt-transport-https
-      - python-software-properties
-      - software-properties-common
+#nftables-ppa:
+#  pkgrepo.managed:
+#    - humanname: erGW team PPA
+#    - name: deb http://ppa.launchpad.net/ergw/backports/ubuntu xenial main
+#    - dist: xenial
+#    - file: /etc/apt/sources.list.d/nftables.list
+#    - keyid: 01305F4CF29AFD6AD18309C074EA811C58A14C3D
+#    - keyserver: keyserver.ubuntu.com
+#    - required_in:
+#      - nftables
+#    - require:
+#      - apt-transport-https
+#      - python-software-properties
+#      - software-properties-common
 
 
 nftables:
