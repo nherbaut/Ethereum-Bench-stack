@@ -11,7 +11,7 @@ echo "Minion id: $4"
 
 echo "" > /etc/apt/sources.list.d/saltstack.list
 
-printf "\n$1 salt" >> /etc/hosts
+printf "\n$1 h0" >> /etc/hosts
 apt-get update
 apt-get install wget apt-transport-https --yes
 wget -O - https://repo.saltstack.com/apt/debian/9/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
@@ -23,7 +23,7 @@ apt-get install salt-master salt-minion python-pygit2 python-git --yes
 echo "rejected_retry: True
 id: $4
 mine_interval: 1
-
+master: h0
 hostsfile:
    alias: controlpath_ip
 
