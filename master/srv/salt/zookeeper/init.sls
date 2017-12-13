@@ -41,7 +41,7 @@ zookeeper:{{ salt['pillar.get']("placement:zookeeper:version")}}:
 
 kafka_pull:
   cmd.run:
-    -name: docker pull {{ kafka_image }}
+    - name: docker pull {{ kafka_image }}
     
     
 kafka:
