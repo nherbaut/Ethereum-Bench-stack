@@ -11,7 +11,7 @@ echo "Minion id: $4"
 
 echo "" > /etc/apt/sources.list.d/saltstack.list
 
-echo "$1 salt" >> /etc/hosts
+echo "\n$1 salt" >> /etc/hosts
 apt-get update
 apt-get install wget apt-transport-https --yes
 wget -O - https://repo.saltstack.com/apt/debian/9/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
