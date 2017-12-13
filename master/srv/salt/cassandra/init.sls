@@ -1,6 +1,5 @@
 
 
-
 {% if grains.id in salt['pillar.get']('placement:cassandra:hosts')  %}
 
 
@@ -14,9 +13,7 @@
 
 
 cassandra:{{ salt['pillar.get']("placement:cassandra:version")}}:
-  docker_image.present:
-    - require:
-      - sls: docker
+  docker_image.present: []
   docker_container.running:
     - name: cass
     - image: cassandra:{{ salt['pillar.get']("placement:cassandra:version")}}
