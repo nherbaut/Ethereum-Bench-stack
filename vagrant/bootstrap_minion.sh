@@ -13,7 +13,7 @@ echo "MINION ID: $4"
 echo "" > /etc/apt/sources.list.d/saltstack.list
 
 #register the master
-echo "$1 salt" >> /etc/hosts
+printf "\n$1 salt" >> /etc/hosts
 
 #install salt
 apt-get update
