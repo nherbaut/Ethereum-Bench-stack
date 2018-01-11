@@ -1,5 +1,3 @@
-include:
-  - docker
 
 python-setuptools:
   pkg.installed

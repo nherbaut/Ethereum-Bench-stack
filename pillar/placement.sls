@@ -1,30 +1,20 @@
 monitoring:
-  - host: salt
+  - host: h0
 placement:
   - cassandra:
     - hosts:
-      - h5
-      - h6
-      - h8
+      - h0
     - version: 3.11.1
-    - first_cqlsh_host: h5
+    - first_cqlsh_host: h0
   - zookeeper:
-    - hosts:
-      - h5
-      - h6
-      - h8
+    - hosts : []
     - version: 3.4.11
-    - host_zooid_mapping:
-      - h5 : 1 
-      - h6 : 2
-      - h8 : 3
+    - host_zooid_mapping: []
   - kafka:
     - replication_factor : 3
     - partition_factor: 6
     - topic_name: words
   - spark:
-    - slaves:
-      - h5
-      - h8
-    - master: h7
+    - slaves: []
+    - master: []
     - image : nherbaut/spark-wordcount:latest
