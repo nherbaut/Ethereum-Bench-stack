@@ -13,3 +13,9 @@ ethereum:
 solc:
   pkg.installed:
     - requires: ethereum_ppa.pkgrepo
+
+
+/opt/sc-archi-gen/ip_list.json:
+  file.managed:
+    - source: salt://ethereum/ip_list.json
+    - template: jinja
