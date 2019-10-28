@@ -1,0 +1,23 @@
+version: "3"
+networks:
+  mynet:
+    driver: overlay
+
+services:
+  client:
+    image: nherbaut/netcont:latest
+    networks: 
+      - mynet
+    deploy:
+      replicas: 3
+    command: bash -c 'iperf -c 10.0.56.$$(( RANDOM % 3 + 102))  -p 5000'
+
+  server:
+    image: nherbaut/netcont:latest
+    networks: 
+      - mynet
+    deploy:
+      replicas: 3
+    command: iperf -s -p 5001
+    ports:
+      - 5000:5001
