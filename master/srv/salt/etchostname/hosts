@@ -1,5 +1,0 @@
-{% set netcont = salt['mine.get']("*", "controlpath_ip") %}
-127.0.01 {{grains.id}}
-{% for host in netcont%}
-{{netcont[host][0]}} {{host}}
-{% endfor %}

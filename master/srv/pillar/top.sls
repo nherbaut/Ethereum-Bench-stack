@@ -1,5 +1,0 @@
-base:
-  '*':
-    - urlsource
-    - influxdb
-    - placement

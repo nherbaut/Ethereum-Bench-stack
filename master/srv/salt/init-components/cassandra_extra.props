@@ -1,3 +1,0 @@
-CREATE KEYSPACE wordcount WITH REPLICATION = {'class': 'SimpleStrategy', 'replication_factor':3};
-CREATE TABLE wordcount.words (word varchar PRIMARY KEY, count bigint);
-
