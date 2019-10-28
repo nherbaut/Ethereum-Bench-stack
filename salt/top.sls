@@ -2,4 +2,5 @@ base:
   "*":
     - node
     - git
+    - ethereum
 
