@@ -4,6 +4,7 @@ ethereum_ppa:
     - ppa: ethereum/ethereum
     - keyid: 1c52189c923f6ca9
     - file: /etc/apt/sources.list.d/ethereum.list
+    - keyserver: keyserver.ubuntu.com
 
 
 ethereum:

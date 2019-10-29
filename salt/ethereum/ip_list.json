@@ -1,9 +1,9 @@
 [
 
- 		{%set hosts= salt['mine.get']("h0","datapath_ip")  %}
+ 		{%set hosts= salt['mine.get']("*","datapath_ip")  %}
 	
 {%for h in hosts.values()%}
-{ "ip":"{{h[0]}} }
+{ "ip":"{{h[0]}}" }
 {{ "," if not loop.last else "" }}	
 {% endfor %}
 
