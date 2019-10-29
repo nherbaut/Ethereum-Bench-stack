@@ -5,5 +5,6 @@ base:
     - git
     - ethereum
     - ssh
+    - etchostname
   "h0":
     - ssh-master

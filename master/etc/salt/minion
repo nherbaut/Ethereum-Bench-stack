@@ -1,6 +1,2 @@
 rejected_retry: True
 mine_interval: 2
-mine_functions:
-  network.interfaces: []
-  network.ip_addrs:
-     - eth1 
