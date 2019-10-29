@@ -8,7 +8,7 @@ module.exports = {
     },
 
     infra: {
-      host: "{{ salt['mine.get']("h0","datapath_ip")["h0"][0] }}",     
+      host: "{{ salt['mine.get']("h1","datapath_ip")["h1"][0] }}",     
       port: 8545,            
       network_id: 61997,       
       gasLimit: "0x346DC5D638865",

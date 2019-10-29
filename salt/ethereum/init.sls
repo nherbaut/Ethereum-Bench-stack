@@ -22,6 +22,12 @@ truffle@5.0.5:
 ganache-cli@6.7.0:
   npm.installed
 
+ssh2:
+  npm.installed
+
+web3:
+  npm.installed
+
 /opt/sc-archi-gen/ip_list.json:
   file.managed:
     - source: salt://ethereum/ip_list.json

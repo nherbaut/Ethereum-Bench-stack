@@ -1,5 +1,6 @@
 base:
   "*":
+    - utils
     - vim
     - node
     - git
