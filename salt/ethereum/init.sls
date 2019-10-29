@@ -15,8 +15,20 @@ solc:
   pkg.installed:
     - requires: ethereum_ppa.pkgrepo
 
+truffle@5.0.5:
+  npm.installed
+
+
+ganache-cli@6.7.0:
+  npm.installed
 
 /opt/sc-archi-gen/ip_list.json:
   file.managed:
     - source: salt://ethereum/ip_list.json
+    - template: jinja
+
+
+/opt/sc-archi-gen/truffle-config.js:
+  file.managed:
+    - source: salt://ethereum/truffle-config.js
     - template: jinja
