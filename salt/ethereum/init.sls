@@ -9,24 +9,44 @@ ethereum_ppa:
 
 ethereum:
   pkg.installed:
-    - requires: ethereum_ppa.pkgrepo
+    - require:
+      - pkgrepo:  ethereum_ppa
 
 solc:
   pkg.installed:
-    - requires: ethereum_ppa.pkgrepo
+    - require: 
+      - pkgrepo: ethereum_ppa
+
+
+/home/vagrant:
+  file.exists
 
 truffle@5.0.5:
-  npm.installed
+  npm.installed:
+    - dir: /home/vagrant
+    - require: 
+      - file : /home/vagrant
+    
 
 
 ganache-cli@6.7.0:
-  npm.installed
+  npm.installed:
+    - dir: /home/vagrant
+    - require:
+      - file : /home/vagrant
 
 ssh2:
-  npm.installed
+  npm.installed:
+    - dir: /home/vagrant
+    - require:
+      - file : /home/vagrant
 
 web3:
-  npm.installed
+  npm.installed:
+    - dir: /home/vagrant
+    - require:
+      - file : /home/vagrant
+
 
 /opt/sc-archi-gen/ip_list.json:
   file.managed:
