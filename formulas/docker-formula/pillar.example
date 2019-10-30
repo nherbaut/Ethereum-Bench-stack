@@ -1,0 +1,177 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
+# example docker registry container
+# if you want to your own docker registry, use this
+docker-containers:
+  lookup:
+
+    # example docker registry container (if you want your own docker registry, use this)
+    registry:
+      # image: 'docker.io/registry:latest'  ##Fedora
+      image: "registry:latest"
+      cmd: ~
+      # Pull image on service restart
+      # (useful if you override the same tag.  example: latest)
+      pull_before_start: true
+      # Do not force container removal on stop (unless true)
+      remove_on_stop: false
+      runoptions:
+        - "-e REGISTRY_LOG_LEVEL=warn"
+        - "-e REGISTRY_STORAGE=s3"
+        - "-e REGISTRY_STORAGE_S3_REGION=us-west-1"
+        - "-e REGISTRY_STORAGE_S3_BUCKET=my-bucket"
+        - "-e REGISTRY_STORAGE_S3_ROOTDIRECTORY=/registry"
+        - "--log-driver=syslog"
+        - "-p 5000:5000"
+        - "--rm"
+      stopoptions:
+        - '-t 10'
+
+    prometheus-server:
+      # example Prometheus container using command arguments
+      image: "prom/prometheus:v1.7.1"
+      cmd: ~
+      args:
+        - '-config.file=/prom-data/prometheus.yml'
+        - '-storage.local.path=/prom-data/data/'
+      # Pull image on service restart
+      # (useful if you override the same tag. example: latest)
+      pull_before_start: true
+      # Do not force container removal on stop (unless true)
+      remove_on_stop: false
+      runoptions:
+        - '--net="host"'
+        - '-v /mnt/prom-data:/prom-data'
+      stopoptions:
+        - '-t 10'
+
+# Docker service
+docker-pkg:
+  lookup:
+    process_signature: /usr/bin/docker
+
+# Docker compose supported attributes
+docker:
+  # install_pypi_pip: true
+  # install_docker_py: true
+  # version of docker-compose to install (defaults to latest)
+  # compose_version: 1.9.0
+  # configfile: /etc/default/docker
+  install_pypi_pip: true
+
+  # yamllint disable-line rule:line-length
+  ### https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-configuration-file
+  # daemon_config:
+  #  metrics-addr: '0.0.0.0:9323'
+  #  experimental: true
+  #  registry-mirrors:
+  #    - 'https://proxy-docker.local:5000'
+  #  live-restore: true
+  #  insecure-registries:
+  #    - harbor.local
+
+  pkg:
+    # Package handling
+    # version: 1.13.1
+    # allow_updates: true
+    use_upstream_app: false
+
+  # config for sysvinit/upstart (for systemd, use drop-ins in your own states)
+  config:
+    - DOCKER_OPTS="-s btrfs --dns 8.8.8.8"
+    - export http_proxy="http://172.17.42.1:3128"
+
+  # PIP proxy configuration (defaults to false)
+  # proxy: proxy.com:3128
+
+  # Global functions for docker_container states
+  containers:
+    skip_translate: ports
+    force_present: false
+    force_running: true
+
+  compose:
+    registry-datastore:
+      dvc: true
+      # image: &registry_image 'docker.io/registry:latest' ## Fedora
+      image: &registry_image 'registry:latest'
+      container_name: &dvc 'registry-datastore'
+      command: echo *dvc data volume container
+      volumes:
+        - &datapath '/registry'
+    registry-service:
+      image: *registry_image
+      container_name: 'registry-service'
+      volumes_from:
+        - *dvc
+      environment:
+        SETTINGS_FLAVOR: 'local'
+        STORAGE_PATH: *datapath
+        SEARCH_BACKEND: 'sqlalchemy'
+        REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: '/registry'
+      ports:
+        - 127.0.0.1:5000:5000
+      # restart: 'always'    # compose v1.9
+      deploy:                # compose v3
+        restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 3
+          window: 120s
+
+    nginx-latest:
+      # image: 'docker.io/nginx:latest'  ##Fedora
+      image: 'nginx:latest'
+      container_name: 'nginx-latest'
+      links:
+        - 'registry-service:registry'
+      ports:
+        - '80:80'
+        - '443:443'
+      volumes:
+        - /srv/docker-registry/nginx/:/etc/nginx/conf.d
+        - /srv/docker-registry/auth/:/etc/nginx/conf.d/auth
+        - /srv/docker-registry/certs/:/etc/nginx/conf.d/certs
+      # restart: 'always'    # compose v1.9
+      deploy:                # compose v3
+        restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 3
+          window: 120s
+
+
+### DEPRECIATED PILLAR EXAMPLES
+
+# additional pillars supporting backwards compatibility only
+
+# docker-pkg:
+#   lookup:
+#     docker-py backwards compatibility
+#     install_docker_py: true
+#     python_package: docker==2.1.0
+#     pip:
+#       version: '== 8.1.1'
+#
+#     Old docker repositories (docker.io, lxc-docker<=1.7) backwards compatibility
+#     version: '1.6.2'
+#     pip_version: '<= 1.2.3'
+#
+# registry:
+#  lookup:
+#      docker registry 2.x backwards compatibility
+#    version: 2
+#    restart: always
+#    runoptions:
+#      - "-e REGISTRY_LOG_LEVEL=warn"
+#      - "-e REGISTRY_STORAGE=s3"
+#      - "-e REGISTRY_STORAGE_S3_REGION=us-west-1"
+#      - "-e REGISTRY_STORAGE_S3_BUCKET=my-bucket"
+#      - "-e REGISTRY_STORAGE_S3_ROOTDIRECTORY=my-folder/my-subfolder/my-sub-subfolder"
+#      - "--log-driver=syslog"
+#      docker registry < 1, even older backwards compatibility
+#    amazon:
+#      aws_bucket: 'my-registry'
+#      aws_key: 'ABCDEFGHIJK123456789'
+#      aws_secret: 'AbcD+efG-HIjK1+++23456+789'
