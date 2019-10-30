@@ -7,5 +7,6 @@ base:
     - ethereum
     - ssh
     - etchostname
+    - telegraf
   "h0":
     - ssh-master
