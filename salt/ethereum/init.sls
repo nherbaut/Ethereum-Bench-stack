@@ -19,7 +19,8 @@ solc:
 
 
 /home/vagrant:
-  file.exists
+  file.directory:
+    - makedirs: True
 
 truffle@5.0.5:
   npm.installed:

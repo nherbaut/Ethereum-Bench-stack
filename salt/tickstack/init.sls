@@ -1,5 +1,9 @@
 {% if grains.id ==  salt['pillar.get']('monitoring:host')   %}
 
+include:
+  - docker
+
+
 chronograf:latest:
   docker_image.present: []
 
