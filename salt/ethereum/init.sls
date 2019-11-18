@@ -1,3 +1,11 @@
+include:
+  - node
+
+bc-deps:
+  npm.bootstrap:
+    - name: /opt/sc-archi-gen
+
+
 ethereum_ppa:
   pkgrepo.managed:
     - name: deb http://ppa.launchpad.net/ethereum/ethereum/ubuntu bionic main
