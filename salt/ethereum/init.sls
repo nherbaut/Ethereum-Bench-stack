@@ -3,7 +3,7 @@ include:
 
 bc-deps:
   npm.bootstrap:
-    - name: /opt/sc-archi-gen
+    - name: /home/vagrant
 
 
 ethereum_ppa:
@@ -57,13 +57,21 @@ web3:
       - file : /home/vagrant
 
 
-/opt/sc-archi-gen/ip_list.json:
+/home/vagrant/ip_list.json:
   file.managed:
     - source: salt://ethereum/ip_list.json
     - template: jinja
 
 
-/opt/sc-archi-gen/truffle-config.js:
+/home/vagrant/truffle-config.js:
   file.managed:
     - source: salt://ethereum/truffle-config.js
     - template: jinja
+
+
+python-tk:
+  pkg.installed
+
+python-deps:
+   pip.installed:
+      - requirements: /home/vagrant/requirements.txt

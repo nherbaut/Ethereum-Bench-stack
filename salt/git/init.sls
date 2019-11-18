@@ -6,6 +6,6 @@ git:
 https://github.com/nherbaut/sc-archi-gen.git:
    git.latest:
      - name: https://github.com/nherbaut/sc-archi-gen.git
-     - target: /opt/sc-archi-gen
+     - target: /home/vagrant
      - branch: master
    
