@@ -8,6 +8,6 @@ base:
     - ssh
     - etchostname
     - telegraf
-    - tickstack
   "h0":
     - ssh-master
+    - tickstack
