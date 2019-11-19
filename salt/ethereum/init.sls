@@ -5,6 +5,25 @@ include:
   npm.bootstrap
   
 
+ethereum_ppa:
+  pkgrepo.managed:
+    - name: deb http://ppa.launchpad.net/ethereum/ethereum/ubuntu bionic main
+    - ppa: ethereum/ethereum
+    - keyid: 1c52189c923f6ca9
+    - file: /etc/apt/sources.list.d/ethereum.list
+    - keyserver: keyserver.ubuntu.com
+
+
+ethereum:
+  pkg.installed:
+    - require:
+      - pkgrepo:  ethereum_ppa
+
+solc:
+  pkg.installed:
+    - require: 
+      - pkgrepo: ethereum_ppa
+
 
 /home/vagrant/ip_list.json:
   file.managed:
@@ -17,4 +36,20 @@ include:
     - source: salt://ethereum/truffle-config.js
     - template: jinja
 
+/home/vagrant/graphs:
+ file.directory:
+    - makedirs: True
+
+/home/vagrant/ethereum/datadir/nodekeys:
+ file.directory:
+    - makedirs: True
+
+
+
+python-tk:
+  pkg.installed
+
+python-deps:
+   pip.installed:
+      - requirements: /home/vagrant/requirements.txt
 
