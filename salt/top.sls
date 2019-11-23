@@ -8,6 +8,7 @@ base:
     - ssh
     - etchostname
     - telegraf
+    - microservices
   "h0":
     - ssh-master
     - tickstack
