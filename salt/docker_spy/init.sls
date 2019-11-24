@@ -5,7 +5,7 @@ python-dev:
 
 /tmp/Docker_Spy-0.0.6-py3-none-any.whl:
   file.managed:
-    - source: salt://docker_spy/Docker_Spy-0.0.4-py2.7.egg
+    - source: salt://docker_spy/Docker_Spy-0.0.6-py3-none-any.whl
 
 
 
