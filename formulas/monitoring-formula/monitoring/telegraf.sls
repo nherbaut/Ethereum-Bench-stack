@@ -3,7 +3,7 @@
 
 /usr/bin/telegraf:
   file.managed:
-       - source: salt://telegraf/telegraf
+       - source: salt://monitoring/bin/telegraf
        - mode: 0775
        - skip_verify: True
        - makedirs: True
@@ -12,7 +12,7 @@
 
 /etc/telegraf/telegraf.conf:
   file.managed:
-    - source: salt://telegraf/telegraf.conf
+    - source: salt://monitoring/files/telegraf.conf
     - template: jinja
     - makedirs: True
 
@@ -20,7 +20,7 @@
 telegraf_systemd_unit:
   file.managed:
     - name: /etc/systemd/system/telegraf.service
-    - source: salt://telegraf/telegraf.service
+    - source: salt://monitoring/files/telegraf.service
     - template: jinja
   module.run:
     - name: service.systemctl_reload
