@@ -1,4 +1,4 @@
-{% set registry_ip=salt["mine.get"]("*","datapath_ip")["h0"][0] %}
+{% set registry_ip=salt["mine.get"]("*","controlpath_ip")["h0"][0] %}
 {% set images=salt["pillar.get"]("docker:registry-images")%}
 
 
