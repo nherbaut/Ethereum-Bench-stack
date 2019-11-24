@@ -35,3 +35,4 @@ __virtualname__ = 'dspy'
 
 def dump(iface,*args, **kwargs):
   return get_network_info(iface)
+
