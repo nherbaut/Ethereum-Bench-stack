@@ -1,0 +1,2 @@
+monitoring:
+  - host: h0
