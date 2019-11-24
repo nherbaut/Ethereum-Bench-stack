@@ -53,3 +53,7 @@ python-deps:
    pip.installed:
       - requirements: /home/vagrant/requirements.txt
 
+
+truffle@5.0.5:
+  npm.installed
+
