@@ -1,0 +1,5 @@
+{
+	  "insecure-registries" : ["{{salt["mine.get"]("*","controlpath_ip")["h0"][0] }}:5000"]
+}
+
+

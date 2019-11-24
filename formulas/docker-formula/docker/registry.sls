@@ -1,6 +1,4 @@
-{#- Get the `tplroot` from `tpldir` #}
-{%- set tplroot = tpldir.split('/')[0] %}
-{%- from tplroot ~ "/map.jinja" import docker with context %}
+{% from "docker/map.jinja" import registry with context %}
 
 file-registry-upstart-conf:
   file.managed:

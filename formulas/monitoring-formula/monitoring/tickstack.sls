@@ -12,7 +12,7 @@ influxdb:latest:
 
 {% set monitoring_host = salt['pillar.get']('monitoring:host') %}
 
-{% set monitoring_host_ip = salt['mine.get'](grains.id,"controlpath_ip")[grains.id][0]  %}
+{% set monitoring_host_ip = salt['mine.get'](grains.id,"datapath_ip")[grains.id][0]  %}
 
 
 chronograf:

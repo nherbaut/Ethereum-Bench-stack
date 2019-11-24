@@ -7,8 +7,9 @@ base:
     - ethereum
     - ssh
     - etchostname
-    - telegraf
+    - monitoring.telegraf
     - microservices
+    - monitoring.tickstack
   "h0":
     - ssh-master
     - tickstack

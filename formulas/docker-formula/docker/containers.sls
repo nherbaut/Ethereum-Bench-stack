@@ -1,6 +1,4 @@
-{#- Get the `tplroot` from `tpldir` #}
-{%- set tplroot = tpldir.split('/')[0] %}
-{%- from tplroot ~ "/map.jinja" import containers with context %}
+{% from "docker/map.jinja" import containers with context %}
 
 include:
   - docker
@@ -8,8 +6,7 @@ include:
 {% for name, container in containers.items() %}
 docker-image-{{ name }}:
   cmd.run:
-    - name: docker pull {{ container.image }} | grep "Image is up to date" >/dev/null 2>&1 || echo "changed=yes comment='Image updated'"
-    - stateful: True
+    - name: docker pull {{ container.image }}
     - require:
       - service: docker-service
 
@@ -21,12 +18,12 @@ docker-container-startup-config-{{ name }}:
   file.managed:
 {%- if init_system == "systemd" %}
     - name: /etc/systemd/system/docker-{{ name }}.service
-    - mode: 644
+    - source: salt://docker/files/systemd.conf
 {%- elif init_system == "upstart" %}
     - name: /etc/init/docker-{{ name }}.conf
-    - mode: 700
+    - source: salt://docker/files/upstart.conf
 {%- endif %}
-    - source: salt://docker/files/service_file.jinja
+    - mode: 700
     - user: root
     - template: jinja
     - defaults:
@@ -40,6 +37,5 @@ docker-container-service-{{ name }}:
     - name: docker-{{ name }}
     - enable: True
     - watch:
-      - cmd: docker-image-{{ name }}
       - file: docker-container-startup-config-{{ name }}
 {% endfor %}
