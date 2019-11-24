@@ -5,8 +5,15 @@ install_docker:
   salt.state:
     - tgt: "*"
     - sls:
+      - utils
+      - vim
+      - node
+      - git
+      - ssh
+      - etchostname
       - docker
       - docker.unsecure_registry
+
 
 # read a list of docker images to download form the docker hub in pillar/docker.sls. Make sure that this images are available through the master docker image registry
 pull_docker_images:
@@ -33,6 +40,12 @@ launch_tickstack:
       - monitoring.telegraf
 
 
+install_ethereum:
+  salt.state:
+    - tgt: "*"
+    - sls:
+       - ethereum
+       - microservices
 
 
 # make sure that every custom module is available on every node (include our custom module docker_spy)

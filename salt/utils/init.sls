@@ -18,3 +18,7 @@ backports.ssl-match-hostname:
 
 python-backports.ssl-match-hostname:
   pkg.installed
+
+netifaces:
+  pip.installed:
+    -  bin_env: /usr/bin/pip2
