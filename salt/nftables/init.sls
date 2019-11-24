@@ -1,13 +1,11 @@
 # nftables installation
 
 
-{% if grains.id != salt["pillar.get"]("monitoring:host") %}
+
 apt-transport-https:
   pkg.installed: []
 
 
-python-software-properties:
-  pkg.installed: []
 
 
 software-properties-common:
@@ -37,13 +35,12 @@ nft add table filter:
     - require:
       - cmd: nft add table filter
 
-#nft add rule filter {{hook}} flow table ft_{{hook}} { ip saddr . ip daddr . tcp sport . tcp dport  . mark counter}:
-#  cmd.run: []
+nft add rule filter {{hook}} flow table ft_{{hook}} { ip saddr . ip daddr . tcp sport . tcp dport  . mark counter}:
+  cmd.run: []
 
-#nft add rule filter {{hook}} flow table fte_{{hook}} { ether saddr . ether daddr . tcp sport . tcp dport  . mark counter}:
-#  cmd.run: []
+nft add rule filter {{hook}} flow table fte_{{hook}} { ether saddr . ether daddr . tcp sport . tcp dport  . mark counter}:
+  cmd.run: []
 {% endfor %}
 
 
 
-{% endif %}
