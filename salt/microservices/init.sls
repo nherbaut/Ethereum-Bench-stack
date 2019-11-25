@@ -9,6 +9,7 @@ nherbaut/smart-ms-stub:latest:
 microservices_stub:
   docker_container.running:
     - image: nherbaut/smart-ms-stub:latest
+    - name: mss
     - port_bindings:
       - 8080:8080
     - link: microservices_stub
