@@ -5,5 +5,5 @@ file_roots:
     - /srv/salt
     - /srv/formulas/node-formula
     - /srv/formulas/docker-formula
-    - /src/formulas/monitoring-formula
+    - /srv/formulas/monitoring-formula
 
