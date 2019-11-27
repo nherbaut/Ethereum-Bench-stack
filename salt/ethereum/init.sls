@@ -52,6 +52,7 @@ python-tk:
 python-deps:
    pip.installed:
       - requirements: /home/vagrant/requirements.txt
+      -  bin_env: /usr/bin/pip3
 
 
 truffle@5.0.5:

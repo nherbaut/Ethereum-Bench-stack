@@ -21,6 +21,7 @@ pull_docker_images:
     - tgt: 'h0'
     - sls:
       - docker.load_registry
+      - ssh-master
 
 # tell the nodes to download all the docker images from the master registry
 disseminate_docker_images:
