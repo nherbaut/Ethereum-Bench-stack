@@ -25,14 +25,6 @@ pull_docker_images:
 
 
 
-# tell the nodes to download all the docker images from the master registry
-disseminate_docker_images:
-  salt.state:
-    - tgt: '*'
-    - sls:
-      - docker.pull_local_registry
-
-
 # launch the monitoring tools
 launch_tickstack:
   salt.state:
@@ -49,9 +41,10 @@ install_ethereum:
     - sls:
        - ethereum
        - microservices
+
 install_broker:
   salt.state:
-    - tgt: salt["pillar.get"]("messagebroker:host")[0]
+    - tgt: {{ salt["pillar.get"]("messagebroker:host") }}
     - sls:
       - microservices.messagebroker
 
