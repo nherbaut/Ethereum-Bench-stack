@@ -44,7 +44,7 @@ install_ethereum:
 
 install_broker:
   salt.state:
-    - tgt: {{ salt["pillar.get"]("messagebroker:host") }}
+    - tgt: {{ salt["pillar.get"]("broker:host") }}
     - sls:
       - microservices.messagebroker
 
