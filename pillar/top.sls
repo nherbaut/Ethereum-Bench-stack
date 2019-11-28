@@ -5,3 +5,4 @@ base:
     - placement
     - docker
     - monitoring
+    - broker
