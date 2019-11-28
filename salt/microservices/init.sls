@@ -29,3 +29,21 @@ microservices_stub:
     - require:
       - nherbaut/smart-ms-stub:latest
 
+/home/vagrant/init_ms_queues.sh:
+  file.managed:
+    - template: jinja
+    - source: salt://microservices/init_ms_queues.sh
+    - mode: 744
+
+/home/vagrant/activate_jms.sh:
+  file.managed:
+    - template: jinja
+    - source: salt://microservices/activate_jms.sh
+    - mode: 744
+
+/home/vagrant/deactivate_jms.sh:
+  file.managed:
+    - template: jinja
+    - source: salt://microservices/deactivate_jms.sh
+    - mode: 744
+
