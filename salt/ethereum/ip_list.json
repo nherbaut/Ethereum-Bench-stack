@@ -3,7 +3,7 @@
 
 {%for k,v in hosts.iteritems()[1:]%}
 {%if k!="h0" %}
-{ "host": "{{k}}", "ip":"{{v[0]}}","user":"root" }
+{ "host": "{{k}}", "port":8080,"ip":"{{v[0]}}","user":"root" }
 {{ "," if not loop.last else "" }}	
 {% endif %}
 {% endfor %}
