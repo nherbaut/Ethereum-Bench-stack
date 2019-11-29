@@ -21,13 +21,8 @@ pull_docker_images:
     - tgt: 'h0'
     - sls:
       - docker.load_registry
+      - ssh-master
 
-# tell the nodes to download all the docker images from the master registry
-disseminate_docker_images:
-  salt.state:
-    - tgt: '*'
-    - sls:
-      - docker.pull_local_registry
 
 
 # launch the monitoring tools
@@ -47,6 +42,11 @@ install_ethereum:
        - ethereum
        - microservices
 
+install_broker:
+  salt.state:
+    - tgt: {{ salt["pillar.get"]("broker:host") }}
+    - sls:
+      - microservices.messagebroker
 
 # make sure that every custom module is available on every node (include our custom module docker_spy)
 sync_modules:
