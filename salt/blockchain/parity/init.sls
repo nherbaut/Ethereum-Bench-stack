@@ -58,3 +58,13 @@ parity_systemd_unit:
     - require:
       - file: /usr/bin/parity
       - file: /etc/parity
+
+
+python3-pip:
+  pkg.installed
+
+json-rpc:
+  pip.installed:
+    - bin_env: /usr/bin/pip3
+    - require:
+      - pkg: python3-pip

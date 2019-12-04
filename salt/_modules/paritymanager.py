@@ -13,7 +13,7 @@ __virtualname__ = 'pman'
 
 PARITY_PILLAR="/srv/pillar/parity.sls"
 
-def add_parity_to_pillar():
+def parity_in_top_pillar_gard():
     with open("/srv/pillar/top.sls","r+") as target:
       top=yaml.load(target.read())
       states=top["base"]["*"]
@@ -28,8 +28,9 @@ def file_exists_guard(f=PARITY_PILLAR):
       with open(PARITY_PILLAR,"w") as target:
           print("creating " + PARITY_PILLAR + " file ")
 
-def dump(*args, **kwargs):
-  add_parity_to_pillar()
+def register_account(*args, **kwargs):
+
+  parity_in_top_pillar_gard()
   file_exists_guard(PARITY_PILLAR)
   
   
@@ -38,10 +39,24 @@ def dump(*args, **kwargs):
     if(data is None):
         data={}
 
-  print(data)
-  data["salut"]="nounou"
+  if "account" in data:
+      return "account already created : %s " %data["account"]
+  
+  #curl --data '{"jsonrpc":"2.0","method":"parity_newAccountFromPhrase","params":["node0", "node0"],"id":0}' -H "Content-Type: application/json" -X POST localhost:8540
+
+  url = "http://localhost:8540"
+
+    # Example echo method
+  payload = {
+    "method": "parity_newAccountFromPhrase",
+    "params": ["node0","node0"],
+    "jsonrpc": "2.0",
+    "id": 0,
+  }
+
+  response = requests.post(url, json=payload).json()
 
   with open(PARITY_PILLAR,"w") as target:
      yaml.dump(data,target)
-  return "nounnou"
+  return response
 
