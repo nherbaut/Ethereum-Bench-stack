@@ -1,3 +1,8 @@
+easy_ssh_from_h0:
+  salt.state:
+    - tgt: 'h0'
+    - sls:
+      - ssh-master
 
 
 #install docker and configure docker damemon to allow unsecure registry to make user nodes can download docker images from the salt-master
@@ -21,7 +26,6 @@ pull_docker_images:
     - tgt: 'h0'
     - sls:
       - docker.load_registry
-      - ssh-master
 
 
 
