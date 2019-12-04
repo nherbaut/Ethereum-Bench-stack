@@ -30,20 +30,6 @@ def file_exists_guard(f=PARITY_PILLAR):
 
 def register_account(*args, **kwargs):
 
-  parity_in_top_pillar_gard()
-  file_exists_guard(PARITY_PILLAR)
-  
-  
-  with open(PARITY_PILLAR,"r+") as target:
-    data=yaml.load(target.read())
-    if(data is None):
-        data={}
-
-  if "account" in data:
-      return "account already created : %s " %data["account"]
-  
-  #curl --data '{"jsonrpc":"2.0","method":"parity_newAccountFromPhrase","params":["node0", "node0"],"id":0}' -H "Content-Type: application/json" -X POST localhost:8540
-
   url = "http://localhost:8540"
 
     # Example echo method
@@ -56,7 +42,5 @@ def register_account(*args, **kwargs):
 
   response = requests.post(url, json=payload).json()
 
-  with open(PARITY_PILLAR,"w") as target:
-     yaml.dump(data,target)
-  return response
+  return response["result"]
 
