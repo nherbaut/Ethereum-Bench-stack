@@ -10,7 +10,7 @@
     - require:
       - file: /root/parity
   cmd.run:
-    - name: bash /root/parity/parity-install.sh --release stable
+    - name: bash /root/parity/parity-install.sh --release beta
     - onchanges_any:
       - file: /root/parity/parity-install.sh
 
@@ -28,7 +28,7 @@
   file.directory:
     - mkdirs: True
 
-parity_systemd_unit:
+/etc/systemd/system/parity.service:
   file.managed:
     - name: /etc/systemd/system/parity.service
     - source: salt://blockchain/parity/parity.service
@@ -36,17 +36,19 @@ parity_systemd_unit:
     - require:
       - file: /etc/parity
   module.run:
-    - name: service.systemctl_reload
+    - names: 
+      - service.systemctl_reload
     - onchanges:
       - file: /usr/bin/parity
       - file: /var/lib/parity
       - file: /etc/parity/chain-config.json
       - file: /etc/parity/config.toml
+      - file: /etc/systemd/system/parity.service
 
 parity:
   service.running:
     - require:
-      - file: parity_systemd_unit
+      - file: /etc/systemd/system/parity.service
 
 
 /etc/parity/chain-config.json:

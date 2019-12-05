@@ -1,6 +1,9 @@
 [parity]
 chain = "/etc/parity/chain-config.json"
 base_path = "/var/lib/parity"
+
+[misc]
+log_file = "/var/log/parity.log"
 [network]
 port = 30300
 nat = "extip:{{ salt["mine.get"](grains.id,"datapath_ip")[grains.id][0]}}"
@@ -20,6 +23,6 @@ port = 8450
 password = ["/etc/parity/node.pwds"]
 [mining]
 engine_signer = "{{ authority_accounts[0] }}"
-reseal_on_txs = "none"
+reseal_on_txs = "none" 
 {% endif %}
 {% endif %}

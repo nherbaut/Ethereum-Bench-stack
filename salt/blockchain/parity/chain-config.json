@@ -3,11 +3,12 @@
     "engine": {
         "authorityRound": {
             "params": {
-                "stepDuration": "5",
+                "stepDuration": "1",
                 "validators" : {
                     "list": [
-                        {%for k,v in salt["mine.get"]("*","authority_node_addr").items() %}
-                            "{{ v[0] }}"
+                        {% set authority_nodes_dict = salt["mine.get"]("*","authority_node_addr") %}
+                        {%for k in authority_nodes_dict.keys() |sort%}
+                            "{{ authority_nodes_dict[k][0] }}"
                             {{ "," if not loop.last else "" }}
                         {% endfor %}
 
@@ -48,8 +49,8 @@
         {% if user_node_addr is not none %}
             {% if user_node_addr.keys()|length > 0  %}
                 
-                {% for k,v in user_node_addr.items() %}
-                , "{{ v[0] }}": { "balance": "10000000000000000000000" } 
+                {% for k in user_node_addr.keys()|sort %}
+                , "{{ user_node_addr[k][0] }}": { "balance": "10000000000000000000000" } 
                 {% endfor %}
             {% endif %}
         {% endif %}
