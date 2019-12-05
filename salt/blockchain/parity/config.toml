@@ -3,8 +3,23 @@ chain = "/etc/parity/chain-config.json"
 base_path = "/var/lib/parity"
 [network]
 port = 30300
+nat = "extip:{{ salt["mine.get"](grains.id,"datapath_ip")[grains.id][0]}}"
 [rpc]
+interface = "{{ salt["mine.get"](grains.id,"datapath_ip")[grains.id][0]}}"
 port = 8540
 apis = ["web3", "eth", "net", "personal", "parity", "parity_set", "traces", "rpc", "parity_accounts"]
 [websockets]
 port = 8450
+
+{% set authority_accounts = salt["paritymanager.get_accounts_by_meta"]("role","authority") %}
+
+# {{authority_accounts}}
+{% if authority_accounts is list %}
+{% if authority_accounts | length > 0 %}
+[account]
+password = ["/etc/parity/node.pwds"]
+[mining]
+engine_signer = "{{ authority_accounts[0] }}"
+reseal_on_txs = "none"
+{% endif %}
+{% endif %}

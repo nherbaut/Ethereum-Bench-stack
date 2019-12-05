@@ -43,11 +43,16 @@ parity_systemd_unit:
       - file: /etc/parity/chain-config.json
       - file: /etc/parity/config.toml
 
+parity:
+  service.running:
+    - require:
+      - file: parity_systemd_unit
 
 
 /etc/parity/chain-config.json:
   file.managed:
     - source: salt://blockchain/parity/chain-config.json
+    - template: jinja
     - require:
       - file: /usr/bin/parity
       - file: /etc/parity
@@ -55,10 +60,18 @@ parity_systemd_unit:
 /etc/parity/config.toml:
   file.managed:
     - source: salt://blockchain/parity/config.toml
+    - template: jinja
     - require:
       - file: /usr/bin/parity
       - file: /etc/parity
 
+/etc/parity/node.pwds:
+  file.managed:
+    - source: salt://blockchain/parity/node.pwds
+    - template: jinja
+    - require:
+      - file: /usr/bin/parity
+      - file: /etc/parity
 
 python3-pip:
   pkg.installed
