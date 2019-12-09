@@ -17,9 +17,7 @@ PARITY_PILLAR="/srv/pillar/parity.sls"
 
 def get_local_ip():
     res="http://%s:8540"%(__salt__["mine.get"](__grains__["id"],"datapath_ip")[__grains__["id"]][0])
-    print("*********************")
-    print(res)
-    print("****************")
+    
     return res
 
 def parity_in_top_pillar_gard():
@@ -125,9 +123,6 @@ def list_accounts(*args, **kwargs):
 
 
 def list_accounts_details(*args, **kwargs):
-    print("*********************")
-    print("*********************")
-    print("*********************")
     payload = {
         "method": "parity_allAccountsInfo",
         "params": [],
@@ -138,7 +133,6 @@ def list_accounts_details(*args, **kwargs):
         response = requests.post(get_local_ip(), json=payload).json()
         return response
     except Exception as e :
-        print("********************* except"  + e)
         return
 
     
@@ -187,8 +181,14 @@ def set_account_meta(account,key,value,*args,**kwargs):
     print(payload)
     try:
         response = requests.post(get_local_ip(), json=payload)
+        print("@@@@@@@@@@@@@@@@@")
+        print(response)
+        print("@@@@@@@@@@@@@@@@@")
         return previous_meta
-    except:
+    except Exception as e:
+        print("*********************")
+        print(res)
+        print("****************")
         return
 
 def get_accounts_by_name(name,*args,**kwargs):
@@ -241,8 +241,8 @@ def get_enode(*args,**kwargs):
 
 def register_addReservedPeer(*args,**kwargs):
     
-    print(__salt__["mine.get"]("*","user_enode_addr").items())
-    for k,v in __salt__["mine.get"]("*","user_enode_addr").items():
+    print(__salt__["mine.get"]("*","parity_enode").items())
+    for k,v in __salt__["mine.get"]("*","parity_enode").items():
         if k!=__grains__["id"]:
             try:
                 payload = {

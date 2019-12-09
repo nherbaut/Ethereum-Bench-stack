@@ -7,6 +7,9 @@ log_file = "/var/log/parity.log"
 [network]
 port = 30300
 nat = "extip:{{ salt["mine.get"](grains.id,"datapath_ip")[grains.id][0]}}"
+
+
+
 [rpc]
 interface = "{{ salt["mine.get"](grains.id,"datapath_ip")[grains.id][0]}}"
 port = 8540
@@ -14,15 +17,18 @@ apis = ["web3", "eth", "net", "personal", "parity", "parity_set", "traces", "rpc
 [websockets]
 port = 8450
 
-{% set authority_accounts = salt["paritymanager.get_accounts_by_meta"]("role","authority") %}
+{% set authority_accounts = salt["mine.get"]("*","parity_authority") %}
 
-# {{authority_accounts}}
-{% if authority_accounts is list %}
-{% if authority_accounts | length > 0 %}
+
+{% if authority_accounts is not none %}
+{% if grains.id in authority_accounts %}
 [account]
 password = ["/etc/parity/node.pwds"]
 [mining]
-engine_signer = "{{ authority_accounts[0] }}"
-reseal_on_txs = "none" 
+engine_signer = "{{ authority_accounts[grains.id][0] }}"
+reseal_on_txs = "own" 
 {% endif %}
 {% endif %}
+
+
+

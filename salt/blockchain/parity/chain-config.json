@@ -3,10 +3,10 @@
     "engine": {
         "authorityRound": {
             "params": {
-                "stepDuration": "1",
+                "stepDuration": "5",
                 "validators" : {
                     "list": [
-                        {% set authority_nodes_dict = salt["mine.get"]("*","authority_node_addr") %}
+                        {% set authority_nodes_dict = salt["mine.get"]("*","parity_authority") %}
                         {%for k in authority_nodes_dict.keys() |sort%}
                             "{{ authority_nodes_dict[k][0] }}"
                             {{ "," if not loop.last else "" }}
@@ -45,7 +45,7 @@
         "0x0000000000000000000000000000000000000002": { "balance": "1", "builtin": { "name": "sha256", "pricing": { "linear": { "base": 60, "word": 12 } } } },
         "0x0000000000000000000000000000000000000003": { "balance": "1", "builtin": { "name": "ripemd160", "pricing": { "linear": { "base": 600, "word": 120 } } } },
         "0x0000000000000000000000000000000000000004": { "balance": "1", "builtin": { "name": "identity", "pricing": { "linear": { "base": 15, "word": 3 } } } }
-        {% set user_node_addr = salt["mine.get"]("*","user_node_addr") %}
+        {% set user_node_addr = salt["mine.get"]("*","parity_user") %}
         {% if user_node_addr is not none %}
             {% if user_node_addr.keys()|length > 0  %}
                 

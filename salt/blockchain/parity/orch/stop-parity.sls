@@ -1,0 +1,2 @@
+parity:
+  service.dead: []
