@@ -2,11 +2,6 @@
 parity:
   service.dead: []
 
-
-    
-
-
-
 /etc/parity:
   file.directory:
     - mkdirs: True
