@@ -44,17 +44,15 @@ solc:
  file.directory:
     - makedirs: True
 
-
+python3-pip:
+  pkg.installed
 
 python-tk:
   pkg.installed
 
-python-deps:
-   pip.installed:
-      - requirements: /home/vagrant/requirements.txt
-      -  bin_env: /usr/bin/pip3
-
-
-truffle@5.0.5:
-  npm.installed
-
+#python-deps:
+#   pip.installed:
+#      - requirements: /home/vagrant/requirements.txt
+#      - bin_env: /usr/bin/pip3
+#      - require:
+#         - pkg: python3-pip
