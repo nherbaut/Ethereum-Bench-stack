@@ -1,7 +1,7 @@
 [
 {%set hosts= salt['mine.get']("*","datapath_ip")  %}
 {% set brokerURL_ip = hosts[salt["pillar.get"]("broker:host")][0] %}
-{%for k,v in hosts.iteritems()%}
+{%for k,v in hosts.items()%}
 {%if k!="h0" %}
 { "host": "{{k}}", "ip":"{{v[0]}}","port":8080,"user":"root","brokerURL":"tcp://{{brokerURL_ip}}:61616" }
 {{ "," if not loop.last else "" }}	
