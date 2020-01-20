@@ -4,6 +4,10 @@ include:
 build-essential:
    pkg.installed
 
+/opt/benchmark/hyperparams.yml:
+   file.managed:
+     - source: salt://sc-benchmark/hyperparams.yml
+
 
 /opt/benchmark/ethereum/datadir:
   file.directory:
