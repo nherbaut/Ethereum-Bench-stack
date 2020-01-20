@@ -1,5 +1,4 @@
 node:
-  version: 13.6.0-1nodesource1
-  install_from_ppa: True
-  ppa:
-    repository_url: https://deb.nodesource.com/node_13.x
+  version: 13.6.0
+  checksum: 00f01315a867da16d1638f7a02966c608e344ac6c5b7d04d1fdae3138fa9d798
+  install_from_binary: True
