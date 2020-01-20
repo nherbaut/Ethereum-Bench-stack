@@ -1,5 +1,13 @@
+include:
+  - node
+
 build-essential:
    pkg.installed
+
+
+/opt/benchmark/ethereum/datadir:
+  file.directory:
+    - mkdirs: True
 
    
 https://github.com/nherbaut/sc-archi-gen.git:
@@ -25,3 +33,22 @@ npm install -g:
     - require:
       - git: https://github.com/nherbaut/sc-archi-gen.git
       - pkg: build-essential
+
+ethereum_ppa:
+  pkgrepo.managed:
+    - name: deb http://ppa.launchpad.net/ethereum/ethereum/ubuntu bionic main
+    - ppa: ethereum/ethereum
+    - keyid: 1c52189c923f6ca9
+    - file: /etc/apt/sources.list.d/ethereum.list
+    - keyserver: keyserver.ubuntu.com
+
+
+ethereum:
+  pkg.installed:
+    - require:
+      - pkgrepo:  ethereum_ppa
+
+solc:
+  pkg.installed:
+    - require: 
+      - pkgrepo: ethereum_ppa
