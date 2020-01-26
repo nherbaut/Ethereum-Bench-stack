@@ -4,6 +4,8 @@ base_path = "/var/lib/parity"
 
 [misc]
 log_file = "/var/log/parity.log"
+logging = "miner=trace,own_tx=trace"
+
 [network]
 port = 30300
 nat = "extip:{{ salt["mine.get"](grains.id,"datapath_ip")[grains.id][0]}}"
@@ -16,6 +18,10 @@ port = 8540
 apis = ["web3", "eth", "net", "personal", "parity", "parity_set", "traces", "rpc", "parity_accounts"]
 [websockets]
 port = 8450
+#  JSON-RPC will be listening for connections on IP all.
+interface = "all"
+# Allows Cross-Origin Requests from domain 'all'.
+origins = ["all"]
 
 {% set authority_accounts = salt["mine.get"]("*","parity_authority") %}
 

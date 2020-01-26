@@ -15,3 +15,6 @@
     - source: salt://blockchain/parity/parity-stop.sh
     - required:
       - file: /home/vagrant
+
+
+

@@ -39,22 +39,31 @@ def file_exists_guard(f=PARITY_PILLAR):
 def create_user_account(*args, **kwargs):
 
   grains_id=__grains__["id"]
+  
+  
+  count=int(__pillar__["parity"]["client_count"])
+  
+  signatures=[]
+  for i in range(0,count):
+    
+    passphrase="user "+grains_id+" "+str(i)
+    payload = {
+        "method": "parity_newAccountFromPhrase",
+        "params": [passphrase,grains_id],
+        "jsonrpc": "2.0",
+        "id": 0,
+    }
+    try:
+        response = requests.post(get_local_ip(), json=payload)
+        response=response.json()
+        account_signature = response["result"]
+        set_account_meta(account_signature[2:],"role","user")
+        set_account_meta(account_signature[2:],"passphrase",passphrase)
+        signatures.append(account_signature)
+    except:
+        break
 
-    # Example echo method
-  payload = {
-    "method": "parity_newAccountFromPhrase",
-    "params": ["user "+grains_id,grains_id],
-    "jsonrpc": "2.0",
-    "id": 0,
-  }
-  try:
-    response = requests.post(get_local_ip(), json=payload)
-    response=response.json()
-    account_signature = response["result"]
-    set_account_meta(account_signature[2:],"role","user")
-    return account_signature
-  except:
-      return
+  return signatures
 
 
   
@@ -63,23 +72,28 @@ def create_user_account(*args, **kwargs):
 
 def create_authority_account(*args, **kwargs):
 
-  grains_id=__grains__["id"]
+    grains_id=__grains__["id"]
+
 
     # Example echo method
-  payload = {
-    "method": "parity_newAccountFromPhrase",
-    "params": [grains_id,grains_id],
-    "jsonrpc": "2.0",
-    "id": 0,
-  }
-  try:
-    response = requests.post(get_local_ip(), json=payload)
-    response=response.json()
-    account_signature = response["result"]
-    set_account_meta(account_signature[2:],"role","authority")
-    return account_signature
-  except:
-      return
+
+
+
+
+    payload = {
+        "method": "parity_newAccountFromPhrase",
+        "params": [grains_id,grains_id],
+        "jsonrpc": "2.0",
+        "id": 0,
+    }
+    try:
+        response = requests.post(get_local_ip(), json=payload)
+        response=response.json()
+        account_signature = response["result"]
+        set_account_meta(account_signature[2:],"role","authority")
+        return account_signature
+    except:
+        return
 
   
 
@@ -133,7 +147,7 @@ def list_accounts_details(*args, **kwargs):
         response = requests.post(get_local_ip(), json=payload).json()
         return response
     except Exception as e :
-        return
+        return "failed to contact server"
 
     
 
