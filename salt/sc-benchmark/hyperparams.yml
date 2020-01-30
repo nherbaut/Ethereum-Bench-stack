@@ -11,3 +11,4 @@ SSH_KEY: '/root/.ssh/id_rsa'
 #Working dir used in each node to install Ethereum
 NODE_WORKING_DIR: '/opt/benchmark'
 
+NB_ACCOUNTS: {{ salt['pillar.get']('sc-benchmar:user_account') }}  

@@ -7,6 +7,7 @@ build-essential:
 /opt/benchmark/hyperparams.yml:
    file.managed:
      - source: salt://sc-benchmark/hyperparams.yml
+     - template: jinja
      - require: 
         - git: https://github.com/nherbaut/sc-archi-gen.git
 
